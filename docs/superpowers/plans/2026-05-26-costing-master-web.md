@@ -1,0 +1,1605 @@
+# Costing Master Web Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Build a single-file static SPA product website for the Costing Master skill with 15+ Hash-routed pages, professional tool aesthetics, and zero external dependencies.
+
+**Architecture:** Single `index.html` with embedded `<style>` and `<script>` blocks. Hash-based SPA router manages page visibility. All content is static example data extracted from the skill's own templates. Two fonts loaded from Google Fonts: Inter (body) and JetBrains Mono (tabular numbers).
+
+**Tech Stack:** HTML5, vanilla CSS3, vanilla JavaScript (ES6+), Google Fonts CDN (Inter + JetBrains Mono). Zero frameworks, zero build tools.
+
+**Output file:** `index.html` at the project root.
+
+---
+
+## File Map
+
+| File | Responsibility |
+|------|---------------|
+| `index.html` | Everything: CSS, HTML templates, JS router, example data |
+
+---
+
+### Task 1: HTML Skeleton + CSS Design System
+
+**Files:**
+- Create: `index.html`
+
+- [ ] **Step 1: Write HTML skeleton with all CSS variables and global styles**
+
+Create `index.html` with the `<!DOCTYPE html>` declaration, `<head>` with font loading, and the complete `<style>` block containing the full design system.
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>造价大师 Costing Master — 可复核的造价审核底稿</title>
+<meta name="description" content="上传合同、清单、结算书和签证资料，生成可复核的造价审核台账、风险清单和需补资料清单。基于 GB/T 50500-2024。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #1a1d23;
+  background: #fff;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ===== CSS CUSTOM PROPERTIES ===== */
+:root {
+  --bg-dark: #1a1d23;
+  --bg-dark-hover: #21262d;
+  --bg-light: #fafafa;
+  --bg-white: #ffffff;
+  --border: #e0e0e0;
+  --border-light: #f0f0f0;
+  --border-dark: #30363d;
+  --text-primary: #1a1d23;
+  --text-secondary: #555;
+  --text-muted: #888;
+  --text-dark-muted: #8b949e;
+  --text-dark: #c9d1d9;
+  --brand: #e36209;
+  --brand-light: #fff7ed;
+  --red: #dc2626;
+  --red-bg: #fef2f2;
+  --red-border: #fecaca;
+  --amber: #d97706;
+  --amber-bg: #fffbeb;
+  --amber-border: #fde68a;
+  --blue: #2563eb;
+  --blue-bg: #eff6ff;
+  --blue-border: #bfdbfe;
+  --green: #16a34a;
+  --green-bg: #f0fdf4;
+  --green-border: #bbf7d0;
+  --gray: #6b7280;
+  --gray-bg: #f9fafb;
+  --gray-border: #e5e7eb;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', monospace;
+}
+
+/* ===== NAVIGATION ===== */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg-dark);
+  display: flex; align-items: center;
+  padding: 0 48px; height: 52px;
+  border-bottom: 1px solid var(--border-dark);
+}
+nav .nav-brand {
+  font-weight: 700; font-size: 14px; color: #fff;
+  margin-right: 32px; white-space: nowrap;
+}
+nav .nav-links { display: flex; align-items: center; gap: 24px; }
+nav .nav-links a {
+  font-size: 12px; color: var(--text-dark-muted);
+  padding: 4px 0; border-bottom: 2px solid transparent;
+  transition: color .15s, border-color .15s;
+  cursor: pointer;
+}
+nav .nav-links a:hover { color: #f0f6fc; }
+nav .nav-links a.active { color: #f0f6fc; border-bottom-color: var(--brand); }
+
+/* ===== LAYOUT ===== */
+.page { display: none; }
+.page.active { display: block; }
+.container { max-width: 760px; margin: 0 auto; }
+.container-wide { max-width: 960px; margin: 0 auto; }
+.section { padding: 48px; }
+.section-sm { padding: 32px 48px; }
+.section-dark { background: var(--bg-dark); color: #fff; }
+.section-light { background: var(--bg-light); }
+.section-white { background: var(--bg-white); }
+.section-divider { border-bottom: 1px solid var(--border); }
+.section-divider-dark { border-bottom: 1px solid var(--border-dark); }
+
+/* ===== TYPOGRAPHY ===== */
+.page-title { font-size: 26px; font-weight: 700; line-height: 1.4; color: var(--text-primary); }
+.page-title-dark { font-size: 26px; font-weight: 700; line-height: 1.4; color: #fff; }
+.section-title { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+.section-title-dark { font-size: 20px; font-weight: 700; color: #fff; }
+.card-title { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+.body-text { font-size: 14px; color: var(--text-primary); }
+.body-text-s { font-size: 13px; color: #666; }
+.caption { font-size: 11px; color: var(--text-muted); }
+.label-xs { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: .5px; }
+.text-brand { color: var(--brand); }
+.text-muted { color: var(--text-muted); }
+.text-dark-muted { color: var(--text-dark-muted); }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.num { font-family: var(--font-mono); text-align: right; white-space: nowrap; }
+.num-muted { font-family: var(--font-mono); text-align: right; color: #999; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-block; padding: 9px 20px;
+  font-size: 13px; font-weight: 600; border-radius: 4px;
+  cursor: pointer; border: none; transition: opacity .15s;
+}
+.btn:hover { opacity: .85; }
+.btn-primary { background: var(--brand); color: #fff; }
+.btn-outline { background: transparent; color: var(--text-dark); border: 1px solid var(--border-dark); }
+.btn-outline:hover { border-color: #555; }
+.btn-link { background: none; color: var(--brand); padding: 0; font-weight: 600; cursor: pointer; border: none; }
+
+/* ===== JUDGMENT TAGS ===== */
+.tag {
+  display: inline-block; padding: 2px 6px;
+  font-size: 10px; font-weight: 600; border-radius: 3px;
+  white-space: nowrap;
+}
+.tag-determined { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+.tag-suspected { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.tag-pending  { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.tag-confirm  { background: var(--gray-bg); color: var(--gray); border: 1px solid var(--gray-border); }
+
+/* ===== VERDICT TAGS ===== */
+.verdict { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.verdict-pass { background: var(--green-bg); color: var(--green); border-left: 3px solid var(--green); }
+.verdict-fix  { background: var(--amber-bg); color: var(--amber); border-left: 3px solid var(--amber); }
+.verdict-stop { background: var(--red-bg); color: var(--red); border-left: 3px solid var(--red); }
+
+/* ===== INFO CHIPS ===== */
+.chip {
+  display: inline-block; padding: 3px 8px;
+  font-size: 10px; border-radius: 3px;
+  white-space: nowrap;
+}
+.chip-default { background: #f0f2f5; color: var(--text-secondary); }
+.chip-brand  { background: var(--brand-light); color: var(--brand); }
+.chip-green  { background: var(--green-bg); color: var(--green); }
+.chip-gray   { background: var(--gray-bg); color: var(--gray); }
+
+/* ===== TABLES ===== */
+.table-wrap {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden;
+}
+.table-title {
+  padding: 12px 16px; font-weight: 600; font-size: 13px;
+  border-bottom: 1px solid #eee;
+}
+table {
+  width: 100%; border-collapse: collapse; font-size: 12px;
+}
+table th {
+  padding: 8px 12px; font-weight: 600; color: var(--text-secondary);
+  background: #f5f5f5; border-bottom: 1px solid var(--border);
+  text-align: left; font-size: 11px; white-space: nowrap;
+}
+table td {
+  padding: 8px 12px; border-bottom: 1px solid var(--border-light);
+  vertical-align: top;
+}
+table tr:last-child td { border-bottom: none; }
+table .td-num { font-family: var(--font-mono); text-align: right; }
+table .td-muted { color: #999; font-family: var(--font-mono); text-align: right; }
+
+/* ===== WIZARD STEPS ===== */
+.wizard { display: flex; align-items: flex-start; gap: 0; margin-bottom: 28px; }
+.wizard .step { flex: 1; text-align: center; position: relative; }
+.wizard .step-circle {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; margin: 0 auto 6px;
+}
+.wizard .step-line {
+  position: absolute; top: 14px; left: 60%; width: 80%; height: 2px;
+}
+.wizard .step-done .step-circle { background: var(--brand); color: #fff; }
+.wizard .step-done .step-line { background: var(--brand); }
+.wizard .step-done .step-label { font-size: 11px; font-weight: 600; color: var(--text-primary); }
+.wizard .step-active .step-circle { background: var(--brand); color: #fff; }
+.wizard .step-active .step-line { background: var(--brand); }
+.wizard .step-active .step-label { font-size: 11px; font-weight: 600; color: var(--brand); }
+.wizard .step-pending .step-circle { background: #e0e0e0; color: #999; }
+.wizard .step-pending .step-line { background: #e0e0e0; }
+.wizard .step-pending .step-label { font-size: 11px; color: #999; }
+
+/* ===== CARDS ===== */
+.card {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 4px; padding: 16px;
+}
+.card-dark {
+  background: var(--bg-dark-hover);
+  border: 1px solid var(--border-dark);
+  border-radius: 4px; padding: 14px;
+}
+.card-accent { border: 2px solid var(--brand); }
+
+/* ===== ROLE CARDS (HOME) ===== */
+.role-card {
+  background: var(--bg-dark-hover); border: 1px solid var(--border-dark);
+  border-radius: 4px; padding: 12px; cursor: pointer;
+  display: flex; align-items: flex-start; gap: 10px;
+  transition: border-color .15s;
+}
+.role-card:hover { border-color: var(--brand); }
+.role-card .role-icon { font-size: 16px; flex-shrink: 0; width: 24px; text-align: center; }
+.role-card .role-name { font-weight: 600; font-size: 12px; color: #e6edf3; }
+.role-card .role-desc { font-size: 10px; color: var(--text-dark-muted); }
+
+/* ===== TRUST BAR ===== */
+.trust-item { text-align: center; }
+.trust-item .trust-label { font-size: 11px; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+.trust-item .trust-desc { font-size: 12px; color: #666; line-height: 1.5; }
+
+/* ===== UPLOAD ZONE ===== */
+.upload-zone {
+  border: 2px dashed #ccc; border-radius: 6px;
+  padding: 36px; text-align: center;
+  transition: border-color .15s;
+}
+.upload-zone:hover { border-color: var(--brand); }
+.upload-zone .upload-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+.upload-zone .upload-hint { font-size: 12px; color: #999; margin-bottom: 16px; }
+
+/* ===== TABS ===== */
+.tab-bar { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 16px; }
+.tab-bar .tab {
+  padding: 8px 16px; font-size: 12px; font-weight: 600;
+  color: var(--text-muted); cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+  transition: color .15s, border-color .15s;
+}
+.tab-bar .tab.active { color: var(--text-primary); border-bottom-color: var(--text-primary); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ===== TIMELINE ===== */
+.timeline { position: relative; padding-left: 20px; border-left: 2px solid var(--brand); }
+.timeline .tl-item { margin-bottom: 16px; position: relative; }
+.timeline .tl-dot {
+  position: absolute; left: -27px; top: 2px;
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid #fff;
+}
+.tl-dot-active  { background: var(--brand); }
+.tl-dot-warning { background: var(--amber); }
+.tl-dot-dark    { background: var(--bg-dark); }
+.tl-dot-green   { background: var(--green); }
+.timeline .tl-title { font-weight: 600; font-size: 12px; color: var(--text-primary); }
+.timeline .tl-desc  { font-size: 11px; color: var(--text-muted); }
+
+/* ===== GRID UTILITIES ===== */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.grid-tight { gap: 12px; }
+.flex { display: flex; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.flex-center { display: flex; align-items: center; gap: 8px; }
+.flex-wrap { flex-wrap: wrap; }
+.gap-8  { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.gap-24 { gap: 24px; }
+.gap-32 { gap: 32px; }
+
+/* ===== MISC ===== */
+.workflow-header { background: var(--bg-light); border-bottom: 1px solid var(--border); }
+.workflow-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.bg-light { background: var(--bg-light); }
+.divider { border-bottom: 1px solid var(--border); }
+.mb-12 { margin-bottom: 12px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.mb-32 { margin-bottom: 32px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.highlight { color: var(--brand); font-weight: 700; }
+
+.disclaimer {
+  margin-top: 16px; padding: 12px;
+  background: var(--gray-bg); border-radius: 4px;
+  font-size: 11px; color: var(--gray);
+  text-align: center;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  nav { padding: 0 16px; }
+  nav .nav-links { gap: 12px; overflow-x: auto; }
+  .section { padding: 32px 16px; }
+  .section-sm { padding: 24px 16px; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .page-title, .page-title-dark { font-size: 22px; }
+  .section-title, .section-title-dark { font-size: 18px; }
+  .wizard .step-label { font-size: 9px; }
+  table { font-size: 11px; }
+  table th, table td { padding: 6px 8px; }
+  .hero-flex { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+```
+
+Include the closing `</body></html>` tags at the end.
+
+- [ ] **Step 2: Commit**
+
+```bash
+git add index.html && git commit -m "feat: add HTML skeleton with complete CSS design system"
+```
+
+---
+
+### Task 2: Navigation Bar + SPA Router
+
+**Files:**
+- Modify: `index.html` (add nav HTML after `<body>`, add router JS in `<script>`)
+
+- [ ] **Step 1: Add navigation bar HTML**
+
+Insert immediately after `<body>`:
+
+```html
+<nav>
+  <span class="nav-brand">造价大师 Costing Master</span>
+  <div class="nav-links">
+    <a href="#home" data-nav="home">首页</a>
+    <a href="#features" data-nav="features">功能</a>
+    <a href="#examples" data-nav="examples">示例</a>
+    <a href="#mechanism/dual-mode" data-nav="mechanism">信任机制</a>
+    <a href="#pricing" data-nav="pricing">定价</a>
+    <a href="#docs" data-nav="docs">文档</a>
+  </div>
+</nav>
+```
+
+- [ ] **Step 2: Add page containers skeleton and JavaScript router**
+
+After the nav, add empty page containers:
+
+```html
+<main>
+  <div id="page-home" class="page active"></div>
+  <div id="page-features" class="page"></div>
+  <div id="page-workflow-settlement" class="page"></div>
+  <div id="page-workflow-boq-check" class="page"></div>
+  <div id="page-workflow-contract-risk" class="page"></div>
+  <div id="page-workflow-change-visa" class="page"></div>
+  <div id="page-workflow-material-price" class="page"></div>
+  <div id="page-workflow-progress-payment" class="page"></div>
+  <div id="page-workflow-quantity-indicator" class="page"></div>
+  <div id="page-examples" class="page"></div>
+  <div id="page-mechanism-dual-mode" class="page"></div>
+  <div id="page-mechanism-second-pass" class="page"></div>
+  <div id="page-mechanism-security" class="page"></div>
+  <div id="page-pricing" class="page"></div>
+  <div id="page-docs" class="page"></div>
+</main>
+```
+
+Before `</body>`, add the router script:
+
+```html
+<script>
+(function() {
+  function navigate() {
+    var hash = location.hash.replace('#', '') || 'home';
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    // Show target page
+    var pageId = 'page-' + hash.replace(/\//g, '-');
+    var target = document.getElementById(pageId);
+    if (target) { target.classList.add('active'); } else { document.getElementById('page-home').classList.add('active'); }
+    // Update nav active state
+    document.querySelectorAll('nav a').forEach(function(a) {
+      a.classList.remove('active');
+      if (a.getAttribute('data-nav') && hash.startsWith(a.getAttribute('data-nav'))) {
+        a.classList.add('active');
+      }
+    });
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', navigate);
+  window.addEventListener('load', navigate);
+})();
+</script>
+```
+
+- [ ] **Step 3: Verify basic routing works**
+
+Open `index.html` in a browser. Click each nav link. Confirm:
+- URL hash changes
+- Corresponding page container becomes visible (empty, but `.active` class applied)
+- Back/forward button works
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html && git commit -m "feat: add navigation bar and SPA hash router"
+```
+
+---
+
+### Task 3: Homepage — Hero + Role Cards
+
+**Files:**
+- Modify: `index.html` (populate `#page-home`)
+
+- [ ] **Step 1: Add homepage Hero + Role cards HTML**
+
+Replace the empty `#page-home` div with:
+
+```html
+<div id="page-home" class="page active">
+
+  <!-- Hero + Roles -->
+  <div class="section section-dark section-divider-dark">
+    <div class="container-wide">
+      <div class="flex gap-48" style="align-items: center;" class="hero-flex">
+        <div style="flex: 1;">
+          <div class="page-title-dark" style="margin-bottom: 10px;">
+            把合同、清单、结算书整理成<span class="highlight">可复核</span>的造价审核底稿。
+          </div>
+          <div class="body-text-s text-dark-muted" style="margin-bottom: 24px;">
+            上传项目文件，AI 引导补齐缺失资料，逐项抽取关键字段，生成引用文件来源的台账和报告。每条意见标明判断等级：<span style="color:#dc2626;">确定问题</span> / <span style="color:#d97706;">疑似问题</span> / <span style="color:#2563eb;">待补资料</span> / <span style="color:#6b7280;">人工确认</span>
+          </div>
+          <div class="flex gap-12">
+            <a href="#examples" class="btn btn-primary" onclick="document.getElementById('page-examples').classList.add('active');document.getElementById('page-home').classList.remove('active');window.scrollTo(0,0);return false;">查看结算审核示例 →</a>
+            <span class="btn btn-outline">上传文件试用</span>
+          </div>
+        </div>
+        <div style="flex: 1;">
+          <div class="label-xs" style="margin-bottom: 8px;">我是</div>
+          <div class="grid-2 grid-tight">
+            <a href="#workflow/boq-check" class="role-card">
+              <span class="role-icon">&#x1F4D0;</span>
+              <div><div class="role-name">造价员/预算员</div><div class="role-desc">清单检查 · 组价 · 指标反查</div></div>
+            </a>
+            <a href="#workflow/settlement" class="role-card">
+              <span class="role-icon">&#x1F4CB;</span>
+              <div><div class="role-name">结算员/审核人员</div><div class="role-desc">结算审核 · 审减台账</div></div>
+            </a>
+            <a href="#workflow/contract-risk" class="role-card">
+              <span class="role-icon">&#x1F4CA;</span>
+              <div><div class="role-name">商务经理/成本负责人</div><div class="role-desc">合同风险 · 材料调差</div></div>
+            </a>
+            <a href="#workflow/boq-check" class="role-card">
+              <span class="role-icon">&#x2696;&#xFE0F;</span>
+              <div><div class="role-name">招投标人员</div><div class="role-desc">限价校核 · 不平衡报价</div></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+- [ ] **Step 2: Commit**
+
+```bash
+git add index.html && git commit -m "feat: add homepage hero section with role cards"
+```
+
+---
+
+### Task 4: Homepage — Trust Bar + 3-Step Process + Footer CTA
+
+**Files:**
+- Modify: `index.html` (append to `#page-home`)
+
+- [ ] **Step 1: Add trust bar, process steps, and CTA**
+
+Append inside `#page-home` after the Hero section div:
+
+```html
+  <!-- Trust Bar -->
+  <div class="section section-white section-divider">
+    <div class="container">
+      <div class="grid-3">
+        <div class="trust-item">
+          <div class="trust-label">不编造</div>
+          <div class="trust-desc">缺少地区定额、信息价或合同条款时，不给出确定金额。</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-label">可溯源</div>
+          <div class="trust-desc">每条意见都引用文件名、页码、条款号或清单行号。</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-label">会自检</div>
+          <div class="trust-desc">复杂任务完成后自动执行10项质检，标记能否交付。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3-Step Process -->
+  <div class="section section-light section-divider">
+    <div class="container text-center">
+      <div class="section-title mb-32">三个步骤，从资料到工作底稿</div>
+      <div class="grid-3">
+        <div>
+          <div style="width:44px;height:44px;background:var(--bg-dark);color:var(--brand);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;margin:0 auto 12px;">1</div>
+          <div class="card-title mb-12">上传与识别</div>
+          <div class="body-text-s">拖入合同、清单、结算书<br>系统自动识别文件类型<br>列出缺失资料清单</div>
+        </div>
+        <div>
+          <div style="width:44px;height:44px;background:var(--bg-dark);color:var(--brand);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;margin:0 auto 12px;">2</div>
+          <div class="card-title mb-12">补充与抽取</div>
+          <div class="body-text-s">补齐关键资料后<br>逐项抽取条款、金额、风险点<br>按确定/疑似/待补分级</div>
+        </div>
+        <div>
+          <div style="width:44px;height:44px;background:var(--bg-dark);color:var(--brand);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;margin:0 auto 12px;">3</div>
+          <div class="card-title mb-12">复核与导出</div>
+          <div class="body-text-s">自动二次审核<br>下载 Markdown/Excel 工作底稿<br>标注所有人工确认点</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer CTA -->
+  <div class="section section-dark text-center">
+    <div class="container">
+      <div class="section-title-dark mb-12">准备好了吗？</div>
+      <div class="body-text-s text-dark-muted mb-24">选择一个身份开始，或直接查看示例看看它能出什么成果。</div>
+      <div class="flex flex-center" style="justify-content: center;">
+        <a href="#examples" class="btn btn-primary">查看结算审核示例 →</a>
+        <a href="#workflow/contract-risk" class="btn btn-outline">查看合同风险示例 →</a>
+      </div>
+    </div>
+  </div>
+```
+
+- [ ] **Step 2: Commit**
+
+```bash
+git add index.html && git commit -m "feat: add homepage trust bar, 3-step process, and CTA"
+```
+
+---
+
+### Task 5: Features Overview Page
+
+**Files:**
+- Modify: `index.html` (populate `#page-features`)
+
+- [ ] **Step 1: Add features overview page**
+
+Replace empty `#page-features` with:
+
+```html
+<div id="page-features" class="page">
+
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">功能总览</div>
+      <div class="section-title mb-12">七大工作流</div>
+      <div class="body-text-s mb-16">每个工作流覆盖一个完整的造价审核场景，从文件上传到成果导出。</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="grid-2">
+        <a href="#workflow/settlement" class="card">
+          <div class="card-title mb-12">&#x1F4CB; 结算审核</div>
+          <div class="body-text-s">上传施工合同、结算书、签证台账和材料调差表，逐项核验，输出审减/审增台账和需补资料清单。</div>
+          <div class="mt-16 flex gap-8 flex-wrap">
+            <span class="chip chip-default">合同 + 结算书</span>
+            <span class="chip chip-default">审减台账</span>
+          </div>
+        </a>
+        <a href="#workflow/boq-check" class="card">
+          <div class="card-title mb-12">&#x1F50D; 清单特征与漏项检查</div>
+          <div class="body-text-s">检查清单五要素，对照图纸和设计说明识别项目特征缺失和疑似漏项。</div>
+          <div class="mt-16 flex gap-8 flex-wrap">
+            <span class="chip chip-default">Excel 清单</span>
+            <span class="chip chip-default">特征检查表</span>
+          </div>
+        </a>
+        <a href="#workflow/contract-risk" class="card">
+          <div class="card-title mb-12">&#x2696;&#xFE0F; 合同造价风险识别</div>
+          <div class="body-text-s">抽取合同条款，按高/中/低标记造价风险，给出谈判建议方向。</div>
+          <div class="mt-16 flex gap-8 flex-wrap">
+            <span class="chip chip-default">PDF / Word</span>
+            <span class="chip chip-default">风险台账</span>
+          </div>
+        </a>
+        <a href="#workflow/change-visa" class="card">
+          <div class="card-title mb-12">&#x1F4DD; 变更签证审核</div>
+          <div class="body-text-s">检查签证四要素：及时性、准确性、完整性、授权性，标记重复计取风险。</div>
+          <div class="mt-16 flex gap-8 flex-wrap">
+            <span class="chip chip-default">签证台账</span>
+            <span class="chip chip-default">证据链评分</span>
+          </div>
+        </a>
+        <a href="#workflow/material-price" class="card">
+          <div class="card-title mb-12">&#x1F4C8; 材料价差分析</div>
+          <div class="body-text-s">按合同约定方法计算材料调差金额，确认基准期、施工期和风险幅度。</div>
+          <div class="mt-16 flex gap-8 flex-wrap">
+            <span class="chip chip-default">信息价 + 询价单</span>
+            <span class="chip chip-default">材差计算表</span>
+          </div>
+        </a>
+        <a href="#workflow/progress-payment" class="card">
+          <div class="card-title mb-12">&#x1F4B0; 进度款审核</div>
+          <div class="body-text-s">核对已完工程量与形象进度，计算本期应付并校验预付款、质保金、甲供材扣回。</div>
+          <div class="mt-16 flex gap-8 flex-wrap">
+            <span class="chip chip-default">付款条款</span>
+            <span class="chip chip-default">审核表</span>
+          </div>
+        </a>
+        <a href="#workflow/quantity-indicator" class="card">
+          <div class="card-title mb-12">&#x1F4CF; 算量指标反查</div>
+          <div class="body-text-s">用钢筋、混凝土、模板含量指标做异常筛查，提示需复核的构件和楼层。</div>
+          <div class="mt-16 flex gap-8 flex-wrap">
+            <span class="chip chip-default">GTJ 导出</span>
+            <span class="chip chip-default">含量指标</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+```
+
+- [ ] **Step 2: Commit**
+
+```bash
+git add index.html && git commit -m "feat: add features overview page with 7 workflow cards"
+```
+
+---
+
+### Task 6: Workflow Page — Settlement Audit (Template for All Workflows)
+
+**Files:**
+- Modify: `index.html` (populate `#page-workflow-settlement`)
+
+- [ ] **Step 1: Add settlement audit workflow page**
+
+Replace empty `#page-workflow-settlement` with:
+
+```html
+<div id="page-workflow-settlement" class="page">
+
+  <!-- Page Header -->
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">工作流</div>
+      <div class="section-title mb-12">结算审核</div>
+      <div class="body-text-s mb-16">上传施工合同、结算书、变更签证台账和材料调差表，逐项核验合同内清单、变更、新增工程、签证、材差、索赔、付款扣回，输出审减/审增台账和需补资料清单。</div>
+      <div class="workflow-tags">
+        <span class="chip chip-default">输入：合同 + 结算书 + 签证台账 + 材差表</span>
+        <span class="chip chip-default">输出：审核报告 + 审减台账 + 管理层摘要</span>
+        <span class="chip chip-brand">依据：GB/T 50500-2024</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3-Step Wizard -->
+  <div class="section-sm section-divider">
+    <div class="container">
+      <div class="wizard">
+        <div class="step step-active">
+          <div class="step-circle">1</div>
+          <div class="step-line"></div>
+          <div class="step-label">上传与识别</div>
+        </div>
+        <div class="step step-pending">
+          <div class="step-circle">2</div>
+          <div class="step-line"></div>
+          <div class="step-label">补资料与分析</div>
+        </div>
+        <div class="step step-pending">
+          <div class="step-circle">3</div>
+          <div class="step-label">复核与导出</div>
+        </div>
+      </div>
+      <!-- Upload Zone -->
+      <div class="upload-zone">
+        <div class="upload-title">拖拽文件到此处，或点击上传</div>
+        <div class="upload-hint">支持 PDF、Excel (.xlsx/.xls)、Word (.docx/.doc)</div>
+        <div class="grid-4 grid-tight mb-16">
+          <div class="card" style="text-align:center;padding:10px 8px;">
+            <div style="font-weight:600;font-size:11px;color:var(--text-secondary);margin-bottom:2px;">&#x1F4C4; 施工合同</div>
+            <div class="caption">PDF / Word</div>
+          </div>
+          <div class="card" style="text-align:center;padding:10px 8px;">
+            <div style="font-weight:600;font-size:11px;color:var(--text-secondary);margin-bottom:2px;">&#x1F4CA; 竣工结算书</div>
+            <div class="caption">Excel</div>
+          </div>
+          <div class="card" style="text-align:center;padding:10px 8px;">
+            <div style="font-weight:600;font-size:11px;color:var(--text-secondary);margin-bottom:2px;">&#x1F4CB; 变更签证台账</div>
+            <div class="caption">Excel</div>
+          </div>
+          <div class="card" style="text-align:center;padding:10px 8px;">
+            <div style="font-weight:600;font-size:11px;color:var(--text-secondary);margin-bottom:2px;">&#x1F4C8; 材料调差表</div>
+            <div class="caption">Excel</div>
+          </div>
+        </div>
+        <div class="caption">缺少关键资料？系统会在下一步列出<span style="color:var(--brand);">需补资料清单</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Example Output -->
+  <div class="section-sm section-light section-divider">
+    <div class="container">
+      <div class="label-xs mb-12">示例输出（步骤 3 完成后）</div>
+      <!-- Judgment tags legend -->
+      <div class="flex gap-16 mb-16">
+        <span class="tag tag-determined">确定问题</span>
+        <span class="tag tag-suspected">疑似问题</span>
+        <span class="tag tag-pending">待补资料</span>
+        <span class="tag tag-confirm">人工确认</span>
+      </div>
+      <!-- Table -->
+      <div class="table-wrap">
+        <div class="table-title">审减/审增问题台账</div>
+        <table>
+          <thead>
+            <tr>
+              <th>序号</th><th>问题摘要</th><th>影响金额(元)</th><th>依据来源</th><th>判断</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>C35混凝土柱综合单价高于合同清单价15%</td>
+              <td class="td-num">-42,500.00</td>
+              <td style="font-size:10px;color:#888;">合同清单 第12页 / 结算书 第8行</td>
+              <td><span class="tag tag-determined">确定</span></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>签证 V-018 脚手架搭拆费可能与综合脚手架清单重复计取</td>
+              <td class="td-muted">&mdash;</td>
+              <td style="font-size:10px;color:#888;">合同清单 第35行 / 签证 V-018</td>
+              <td><span class="tag tag-suspected">疑似</span></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>材料调差缺少施工期信息价依据，无法核实调差金额</td>
+              <td class="td-muted">&mdash;</td>
+              <td style="font-size:10px;color:#888;">材差表 第3行</td>
+              <td><span class="tag tag-pending">待补</span></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>签证 V-022 签字人授权不明，需确认合同约定的发包人代表</td>
+              <td class="td-muted">&mdash;</td>
+              <td style="font-size:10px;color:#888;">合同专用条款 未提供</td>
+              <td><span class="tag tag-confirm">人工确认</span></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>预付款扣回计算未按合同第17.3条约定的等比例扣回方式</td>
+              <td class="td-num">-18,200.00</td>
+              <td style="font-size:10px;color:#888;">合同 第17.3条 / 进度款表 第3期</td>
+              <td><span class="tag tag-determined">确定</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="disclaimer">本输出为工作底稿，不替代注册造价工程师签章、企业审批或最终结算定案文件。</div>
+    </div>
+  </div>
+
+</div>
+```
+
+- [ ] **Step 2: Commit**
+
+```bash
+git add index.html && git commit -m "feat: add settlement audit workflow page with wizard and example table"
+```
+
+---
+
+### Task 7: Remaining 6 Workflow Pages
+
+**Files:**
+- Modify: `index.html` (populate remaining 6 workflow page containers)
+
+- [ ] **Step 1: BOQ Check workflow page**
+
+Replace empty `#page-workflow-boq-check`:
+
+```html
+<div id="page-workflow-boq-check" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">工作流</div>
+      <div class="section-title mb-12">清单特征与漏项检查</div>
+      <div class="body-text-s mb-16">检查工程量清单五要素（编码、名称、特征、单位、工程量），对照招标范围和图纸说明识别项目特征描述缺失和疑似漏项。</div>
+      <div class="workflow-tags">
+        <span class="chip chip-default">输入：工程量清单 Excel + 设计说明</span>
+        <span class="chip chip-default">输出：特征检查表 + 漏项登记表</span>
+        <span class="chip chip-brand">依据：GB/T 50500-2024</span>
+      </div>
+    </div>
+  </div>
+  <div class="section-sm section-divider">
+    <div class="container">
+      <div class="wizard">
+        <div class="step step-active"><div class="step-circle">1</div><div class="step-line"></div><div class="step-label">上传清单与图纸</div></div>
+        <div class="step step-pending"><div class="step-circle">2</div><div class="step-line"></div><div class="step-label">五要素检查</div></div>
+        <div class="step step-pending"><div class="step-circle">3</div><div class="step-label">输出检查表</div></div>
+      </div>
+      <div class="upload-zone"><div class="upload-title">拖拽工程量清单 Excel 和设计说明 PDF</div><div class="upload-hint">同时上传图纸说明可大幅提高漏项识别准确率</div></div>
+    </div>
+  </div>
+  <div class="section-sm section-light">
+    <div class="container">
+      <div class="label-xs mb-12">示例输出</div>
+      <div class="table-wrap mb-24">
+        <div class="table-title">清单特征检查表</div>
+        <table>
+          <thead><tr><th>序号</th><th>清单编码</th><th>项目名称</th><th>缺失特征</th><th>影响</th><th>依据</th><th>判断</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>010501001001</td><td>垫层</td><td>缺少厚度、商品混凝土/现场搅拌、泵送方式</td><td>影响综合单价</td><td style="font-size:10px;color:#888;">设计说明 第3页</td><td><span class="tag tag-suspected">疑似</span></td></tr>
+            <tr><td>2</td><td>010902001001</td><td>屋面卷材防水</td><td>缺少防水层厚度和设防道数</td><td>影响报价和结算</td><td style="font-size:10px;color:#888;">设计说明 第5页</td><td><span class="tag tag-suspected">疑似</span></td></tr>
+            <tr><td>3</td><td>010515001001</td><td>现浇构件钢筋</td><td>缺少钢筋种类、规格范围、抗震等级</td><td>影响组价</td><td style="font-size:10px;color:#888;">清单 第8行</td><td><span class="tag tag-determined">确定</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+- [ ] **Step 2: Contract Risk workflow page**
+
+Replace empty `#page-workflow-contract-risk`:
+
+```html
+<div id="page-workflow-contract-risk" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">工作流</div>
+      <div class="section-title mb-12">合同造价风险识别</div>
+      <div class="body-text-s mb-16">抽取合同类型、承包范围、计价方式、付款、调价、变更、结算和争议条款，按高/中/低标记造价风险并给出谈判建议。</div>
+      <div class="workflow-tags">
+        <span class="chip chip-default">输入：合同 PDF/Word + 招标文件</span>
+        <span class="chip chip-default">输出：风险台账 + 管理层摘要</span>
+        <span class="chip chip-brand">依据：GB/T 50500-2024</span>
+      </div>
+    </div>
+  </div>
+  <div class="section-sm section-divider">
+    <div class="container">
+      <div class="wizard">
+        <div class="step step-active"><div class="step-circle">1</div><div class="step-line"></div><div class="step-label">上传合同文件</div></div>
+        <div class="step step-pending"><div class="step-circle">2</div><div class="step-line"></div><div class="step-label">抽取条款</div></div>
+        <div class="step step-pending"><div class="step-circle">3</div><div class="step-label">输出风险台账</div></div>
+      </div>
+      <div class="upload-zone"><div class="upload-title">拖拽合同文件 (PDF/Word) 和招标文件</div><div class="upload-hint">需提供专用条款，通用条款仅作参考</div></div>
+    </div>
+  </div>
+  <div class="section-sm section-light">
+    <div class="container">
+      <div class="label-xs mb-12">示例输出</div>
+      <div class="table-wrap mb-24">
+        <div class="table-title">合同造价风险台账</div>
+        <table>
+          <thead><tr><th>序号</th><th>风险等级</th><th>条款位置</th><th>原文摘要</th><th>造价/商务影响</th><th>建议谈判点</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><span style="color:#dc2626;font-weight:600;">高</span></td><td>专用条款 第37条</td><td>"材料价格风险由承包人全部承担"</td><td>违反GB/T 50500-2024禁止无限风险条款，材料价差全部由承包人承担</td><td>修改为约定风险幅度（如主要材料±5%以内由承包人承担，超出部分发包人承担）</td></tr>
+            <tr><td>2</td><td><span style="color:#d97706;font-weight:600;">中</span></td><td>专用条款 第21条</td><td>变更费用应在14天内申报，逾期视为放弃</td><td>14天时效对承包人较紧，可能导致变更费用损失</td><td>建议延长至28天，与GF-2017-0201示范文本一致</td></tr>
+            <tr><td>3</td><td><span style="color:#2563eb;font-weight:600;">低</span></td><td>协议书 第5条</td><td>质量保证金为结算价3%</td><td>符合GB/T 50500-2024上限要求，风险可控</td><td>无需修改</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+- [ ] **Step 3: Change Visa Audit workflow page**
+
+Replace empty `#page-workflow-change-visa`:
+
+```html
+<div id="page-workflow-change-visa" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">工作流</div>
+      <div class="section-title mb-12">变更签证审核</div>
+      <div class="body-text-s mb-16">检查签证四要素（及时性、准确性、完整性、授权性），核对是否合同范围内已包含、是否重复计取，按合同定价原则检查单价适用顺序。</div>
+      <div class="workflow-tags">
+        <span class="chip chip-default">输入：签证台账 + 合同条款</span>
+        <span class="chip chip-default">输出：审核表 + 需补资料清单</span>
+        <span class="chip chip-brand">依据：合同 + GB/T 50500-2024</span>
+      </div>
+    </div>
+  </div>
+  <div class="section-sm section-divider"><div class="container"><div class="wizard">
+    <div class="step step-active"><div class="step-circle">1</div><div class="step-line"></div><div class="step-label">上传签证资料</div></div>
+    <div class="step step-pending"><div class="step-circle">2</div><div class="step-line"></div><div class="step-label">四要素检查</div></div>
+    <div class="step step-pending"><div class="step-circle">3</div><div class="step-label">输出审核表</div></div>
+  </div><div class="upload-zone"><div class="upload-title">拖拽签证台账 Excel 及对应附件</div><div class="upload-hint">含合同变更签证条款时审核更完整</div></div></div></div>
+  <div class="section-sm section-light"><div class="container"><div class="label-xs mb-12">示例输出</div>
+  <div class="table-wrap">
+    <div class="table-title">变更签证审核表</div>
+    <table>
+      <thead><tr><th>签证编号</th><th>事项</th><th>申报金额(元)</th><th>发现的问题</th><th>判断</th></tr></thead>
+      <tbody>
+        <tr><td>V-018</td><td>主体结构脚手架搭拆增加费</td><td class="td-num">50,000.00</td><td>可能与综合脚手架清单重复计取，需核对措施项目包干范围</td><td><span class="tag tag-suspected">疑似</span></td></tr>
+        <tr><td>V-022</td><td>地下室防水增加</td><td class="td-num">128,000.00</td><td>缺少发包人书面指令，签字人授权不明</td><td><span class="tag tag-confirm">人工确认</span></td></tr>
+        <tr><td>V-025</td><td>C35混凝土柱变更</td><td class="td-num">-12,300.00</td><td>变更单价未按合同三优先原则（合同已有价），直接采用市场询价</td><td><span class="tag tag-determined">确定</span></td></tr>
+      </tbody>
+    </table>
+  </div></div></div>
+</div>
+```
+
+- [ ] **Step 4: Material Price Analysis workflow page**
+
+Replace empty `#page-workflow-material-price`:
+
+```html
+<div id="page-workflow-material-price" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">工作流</div>
+      <div class="section-title mb-12">材料价差分析</div>
+      <div class="body-text-s mb-16">确认材料是否在合同可调范围内，匹配规格型号，确认基准期和施工期价格来源，按合同方法计算风险幅度内外的调差金额。</div>
+      <div class="workflow-tags">
+        <span class="chip chip-default">输入：材料价格表 + 合同调差条款</span>
+        <span class="chip chip-default">输出：材料价差计算表</span>
+        <span class="chip chip-brand">依据：GB/T 50500-2024 附录A</span>
+      </div>
+    </div>
+  </div>
+  <div class="section-sm section-divider"><div class="container"><div class="wizard">
+    <div class="step step-active"><div class="step-circle">1</div><div class="step-line"></div><div class="step-label">上传价格资料</div></div>
+    <div class="step step-pending"><div class="step-circle">2</div><div class="step-line"></div><div class="step-label">匹配与核实</div></div>
+    <div class="step step-pending"><div class="step-circle">3</div><div class="step-label">计算与输出</div></div>
+  </div><div class="upload-zone"><div class="upload-title">拖拽信息价、询价单、采购合同及材料台账</div><div class="upload-hint">如缺少合同材料调差条款，无法确定风险幅度</div></div></div></div>
+  <div class="section-sm section-light"><div class="container"><div class="label-xs mb-12">示例输出</div>
+  <div class="table-wrap">
+    <div class="table-title">材料价差计算表</div>
+    <table>
+      <thead><tr><th>材料名称</th><th>规格</th><th>基准期价(元/t)</th><th>施工期价(元/t)</th><th>风险幅度</th><th>可调价差(元/t)</th><th>用量(t)</th><th>调差总额(元)</th><th>判断</th></tr></thead>
+      <tbody>
+        <tr><td>螺纹钢</td><td>HRB400 &#x3A6;16-25</td><td class="td-num">4,000.00</td><td class="td-num">4,600.00</td><td style="text-align:center;">&plusmn;5%</td><td class="td-num">400.00</td><td class="td-num">320.00</td><td class="td-num">128,000.00</td><td><span class="tag tag-determined">确定</span></td></tr>
+        <tr><td>商品混凝土</td><td>C35</td><td class="td-num">520.00</td><td class="td-num">560.00</td><td style="text-align:center;">&plusmn;5%</td><td class="td-num">34.00</td><td class="td-num">1,200.00</td><td class="td-num">40,800.00</td><td><span class="tag tag-determined">确定</span></td></tr>
+        <tr><td>电缆</td><td>YJV-4&times;25+1&times;16</td><td class="td-num">95.00</td><td class="td-muted">&mdash;</td><td style="text-align:center;">&plusmn;5%</td><td class="td-muted">&mdash;</td><td class="td-num">2,800.00</td><td class="td-muted">&mdash;</td><td><span class="tag tag-pending">待补</span></td></tr>
+      </tbody>
+    </table>
+  </div></div></div>
+</div>
+```
+
+- [ ] **Step 5: Progress Payment Audit workflow page**
+
+Replace empty `#page-workflow-progress-payment`:
+
+```html
+<div id="page-workflow-progress-payment" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">工作流</div>
+      <div class="section-title mb-12">进度款审核</div>
+      <div class="body-text-s mb-16">核对本期已完工程量与形象进度、监理确认，按合同公式计算本期应付，校验预付款扣回、质保金扣留、甲供材扣回。</div>
+      <div class="workflow-tags">
+        <span class="chip chip-default">输入：进度款申报表 + 合同付款条款</span>
+        <span class="chip chip-default">输出：进度款审核表</span>
+      </div>
+    </div>
+  </div>
+  <div class="section-sm section-divider"><div class="container"><div class="wizard">
+    <div class="step step-active"><div class="step-circle">1</div><div class="step-line"></div><div class="step-label">上传申报资料</div></div>
+    <div class="step step-pending"><div class="step-circle">2</div><div class="step-line"></div><div class="step-label">核验产值与扣款</div></div>
+    <div class="step step-pending"><div class="step-circle">3</div><div class="step-label">输出审核表</div></div>
+  </div><div class="upload-zone"><div class="upload-title">拖拽进度款申报表、已完工程量报表和监理确认单</div><div class="upload-hint">同时提供合同付款条款和已标价清单</div></div></div></div>
+  <div class="section-sm section-light"><div class="container"><div class="label-xs mb-12">示例输出</div>
+  <div class="table-wrap">
+    <div class="table-title">进度款审核表</div>
+    <table>
+      <thead><tr><th>项目</th><th>申报金额(元)</th><th>审核金额(元)</th><th>差异(元)</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>本期已完产值</td><td class="td-num">3,200,000.00</td><td class="td-num">3,050,000.00</td><td class="td-num" style="color:#dc2626;">-150,000.00</td><td>2#楼三层梁板未完成模板拆除，不满足计量条件</td></tr>
+        <tr><td>按85%支付</td><td class="td-num">2,720,000.00</td><td class="td-num">2,592,500.00</td><td class="td-num" style="color:#dc2626;">-127,500.00</td><td></td></tr>
+        <tr><td>预付款扣回</td><td class="td-num">-200,000.00</td><td class="td-num">-200,000.00</td><td class="td-num">0.00</td><td>按合同第17.3条，等比例扣回第3期</td></tr>
+        <tr style="font-weight:600;"><td>本期应付</td><td class="td-num">2,520,000.00</td><td class="td-num">2,392,500.00</td><td class="td-num" style="color:#dc2626;">-127,500.00</td><td></td></tr>
+      </tbody>
+    </table>
+  </div></div></div>
+</div>
+```
+
+- [ ] **Step 6: Quantity Indicator Check workflow page**
+
+Replace empty `#page-workflow-quantity-indicator`:
+
+```html
+<div id="page-workflow-quantity-indicator" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">工作流</div>
+      <div class="section-title mb-12">算量指标反查</div>
+      <div class="body-text-s mb-16">用钢筋、混凝土、模板、砌体等含量指标做异常筛查，提示需复核的构件、楼层和软件设置，不直接判定算量错误。</div>
+      <div class="workflow-tags">
+        <span class="chip chip-default">输入：GTJ/GCCP 工程量导出表 + 建筑面积</span>
+        <span class="chip chip-default">输出：算量指标反查表</span>
+      </div>
+    </div>
+  </div>
+  <div class="section-sm section-divider"><div class="container"><div class="wizard">
+    <div class="step step-active"><div class="step-circle">1</div><div class="step-line"></div><div class="step-label">上传工程量表</div></div>
+    <div class="step step-pending"><div class="step-circle">2</div><div class="step-line"></div><div class="step-label">含量指标对比</div></div>
+    <div class="step step-pending"><div class="step-circle">3</div><div class="step-label">输出异常清单</div></div>
+  </div><div class="upload-zone"><div class="upload-title">拖拽 GTJ/GCCP 导出的工程量汇总表和建筑面积数据</div><div class="upload-hint">含结构类型、层数、抗震等级等说明时判断更准确</div></div></div></div>
+  <div class="section-sm section-light"><div class="container"><div class="label-xs mb-12">示例输出</div>
+  <div class="table-wrap">
+    <div class="table-title">算量指标反查表</div>
+    <table>
+      <thead><tr><th>指标</th><th>计算值</th><th>参考区间</th><th>偏差</th><th>可能原因</th><th>建议复核</th></tr></thead>
+      <tbody>
+        <tr><td>钢筋含量</td><td class="td-num">85.00 kg/m&sup2;</td><td style="text-align:center;">65-90 kg/m&sup2;</td><td style="text-align:center;color:var(--green);">正常</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>混凝土含量</td><td class="td-num">0.72 m&sup3;/m&sup2;</td><td style="text-align:center;">0.38-0.55 m&sup3;/m&sup2;</td><td style="text-align:center;color:var(--red);">偏高</td><td>可能混入地下车库量；或板厚设置异常</td><td>分楼层核对混凝土量，检查地下部分是否单独统计</td></tr>
+        <tr><td>模板含量</td><td class="td-num">1.80 m&sup2;/m&sup2;</td><td style="text-align:center;">2.5-3.0 m&sup2;/m&sup2;</td><td style="text-align:center;color:var(--red);">偏低</td><td>构件可能漏建；或模板计算规则设置问题</td><td>核对 GTJ 构件汇总表，确认模板计算规则</td></tr>
+      </tbody>
+    </table>
+  </div></div></div>
+</div>
+```
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add index.html && git commit -m "feat: add all 6 remaining workflow pages"
+```
+
+---
+
+### Task 8: Example Center Page
+
+**Files:**
+- Modify: `index.html` (populate `#page-examples`)
+
+- [ ] **Step 1: Add example center page**
+
+Replace empty `#page-examples`:
+
+```html
+<div id="page-examples" class="page">
+
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">示例中心</div>
+      <div class="section-title">结算审核 — 某高层住宅项目</div>
+    </div>
+  </div>
+
+  <!-- Background info bar -->
+  <div class="section-sm section-white section-divider">
+    <div class="container">
+      <div class="flex gap-24 flex-wrap" style="font-size:12px;color:#666;">
+        <span>项目类型：高层住宅</span>
+        <span>所在地：广东省广州市</span>
+        <span>合同类型：单价合同</span>
+        <span>适用标准：GB/T 50500-2024</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow timeline + Output tabs -->
+  <div class="section-sm section-light">
+    <div class="container">
+      <div class="flex gap-32" style="align-items:flex-start;">
+        <!-- Left: timeline -->
+        <div style="flex:1;min-width:200px;">
+          <div class="label-xs mb-12">处理流程</div>
+          <div class="timeline">
+            <div class="tl-item"><div class="tl-dot tl-dot-active"></div><div class="tl-title">上传 4 份文件</div><div class="tl-desc">合同 PDF + 结算书 Excel + 签证台账 + 材差表</div></div>
+            <div class="tl-item"><div class="tl-dot tl-dot-warning"></div><div class="tl-title">系统提示缺资料</div><div class="tl-desc">缺少合同专用条款中变更签证授权人约定</div></div>
+            <div class="tl-item"><div class="tl-dot tl-dot-dark"></div><div class="tl-title">用户补充合同专用条款</div><div class="tl-desc">补传后继续</div></div>
+            <div class="tl-item"><div class="tl-dot tl-dot-active"></div><div class="tl-title">抽取关键字段</div><div class="tl-desc">合同价、报审价、已付款、签证金额</div></div>
+            <div class="tl-item"><div class="tl-dot tl-dot-active"></div><div class="tl-title">生成 23 条问题台账</div><div class="tl-desc">12 确定 + 7 疑似 + 3 待补 + 1 人工确认</div></div>
+            <div class="tl-item"><div class="tl-dot tl-dot-green"></div><div class="tl-title">二次审核：通过</div><div class="tl-desc">建议人工复核 3 项争议事项</div></div>
+            <div class="tl-item"><div class="tl-dot tl-dot-dark"></div><div class="tl-title">下载成果</div><div class="tl-desc">结算审核报告 + 审减台账 + 管理层摘要</div></div>
+          </div>
+        </div>
+        <!-- Right: output tabs -->
+        <div style="flex:2;min-width:300px;">
+          <div class="tab-bar" id="example-tabs">
+            <span class="tab active" onclick="switchTab('example-tabs','tab-sjtz',this)">审减台账</span>
+            <span class="tab" onclick="switchTab('example-tabs','tab-zysx',this)">争议事项</span>
+            <span class="tab" onclick="switchTab('example-tabs','tab-bzl',this)">需补资料</span>
+            <span class="tab" onclick="switchTab('example-tabs','tab-summary',this)">管理层摘要</span>
+          </div>
+          <div class="tab-content active" id="tab-sjtz">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>#</th><th>问题摘要</th><th style="text-align:right;">影响金额(元)</th><th>判断</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>C35混凝土柱单价高于合同价15%</td><td class="td-num">-42,500.00</td><td><span class="tag tag-determined">确定</span></td></tr>
+                  <tr><td>2</td><td>签证V-018疑似与脚手架清单重复</td><td class="td-muted">&mdash;</td><td><span class="tag tag-suspected">疑似</span></td></tr>
+                  <tr><td>3</td><td>材料调差缺施工期信息价依据</td><td class="td-muted">&mdash;</td><td><span class="tag tag-pending">待补</span></td></tr>
+                  <tr><td>...</td><td colspan="3" style="color:var(--text-muted);text-align:center;">查看完整 23 条</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-content" id="tab-zysx">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>#</th><th>争议事项</th><th style="text-align:right;">承包人主张(元)</th><th style="text-align:right;">审核意见(元)</th><th style="text-align:right;">争议差额(元)</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>停窝工期间人工费补偿</td><td class="td-num">180,000.00</td><td class="td-num">90,000.00</td><td class="td-num">90,000.00</td></tr>
+                  <tr><td>2</td><td>设计变更导致的模板费用增加</td><td class="td-num">65,000.00</td><td class="td-num">40,000.00</td><td class="td-num">25,000.00</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-content" id="tab-bzl">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>#</th><th>缺失资料</th><th>用途</th><th>优先级</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>合同专用条款变更签证章节</td><td>确认授权签字人和时效约定</td><td><span style="color:#dc2626;font-weight:600;">高</span></td></tr>
+                  <tr><td>2</td><td>施工期广州市建设工程造价信息</td><td>核实材料调差计算依据</td><td><span style="color:#dc2626;font-weight:600;">高</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-content" id="tab-summary">
+            <div class="card"><div class="card-title mb-12">审核结论摘要</div>
+              <div style="font-size:12px;line-height:1.8;">
+                <div>报审金额：<span class="num">28,650,000.00</span> 元</div>
+                <div>确定审减：<span class="num" style="color:#dc2626;">-847,200.00</span> 元</div>
+                <div>确定审增：<span class="num" style="color:#16a34a;">+123,500.00</span> 元</div>
+                <div>疑似争议：<span class="num" style="color:#d97706;">315,000.00</span> 元（需人工确认）</div>
+                <div style="font-weight:700;margin-top:4px;">建议审定金额：<span class="num">27,926,300.00</span> 元（待争议解决后调整）</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="disclaimer">本输出为工作底稿，不替代注册造价工程师签章、企业审批或最终结算定案文件。</div>
+    </div>
+  </div>
+
+</div>
+```
+
+- [ ] **Step 2: Add tab switcher JavaScript function**
+
+In the `<script>` block, add after the router:
+
+```javascript
+function switchTab(barId, tabId, el) {
+  var bar = document.getElementById(barId);
+  if (!bar) return;
+  bar.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  var parent = bar.parentElement;
+  parent.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+  var content = document.getElementById(tabId);
+  if (content) content.classList.add('active');
+}
+```
+
+- [ ] **Step 3: Verify tab switching works**
+
+Open in browser, navigate to `#examples`, click each tab. Verify content switches correctly.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html && git commit -m "feat: add example center page with timeline and tab switcher"
+```
+
+---
+
+### Task 9: Mechanism Pages — Dual Mode, Second Pass, Security
+
+**Files:**
+- Modify: `index.html` (populate 3 mechanism pages)
+
+- [ ] **Step 1: Dual Mode page**
+
+Replace empty `#page-mechanism-dual-mode`:
+
+```html
+<div id="page-mechanism-dual-mode" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">信任机制</div>
+      <div class="section-title mb-12">两种工作模式</div>
+      <div class="body-text-s">为保证输出可靠性，系统根据是否上传地区资料自动切换工作模式。</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container"><div class="grid-2">
+      <div class="card">
+        <div class="flex-between mb-12">
+          <div class="card-title">快速参考模式</div>
+          <span class="chip chip-green">免费</span>
+        </div>
+        <div class="body-text-s" style="line-height:1.8;">
+          <div style="margin-bottom:4px;">&check; 投资估算区间参考</div>
+          <div style="margin-bottom:4px;">&check; 报价异常提示</div>
+          <div style="margin-bottom:4px;">&check; 需补资料清单</div>
+          <div style="margin-bottom:4px;color:#999;">&cross; 确定金额结论</div>
+          <div style="margin-bottom:4px;color:#999;">&cross; 地区费率/定额</div>
+          <div style="color:#999;">&cross; 结算审核结论</div>
+        </div>
+        <div class="caption mt-16">无需上传地区资料，使用内置全国参考区间</div>
+      </div>
+      <div class="card card-accent">
+        <div class="flex-between mb-12">
+          <div class="card-title">项目工作模式</div>
+          <span class="chip chip-brand">专业版</span>
+        </div>
+        <div class="body-text-s" style="line-height:1.8;">
+          <div style="margin-bottom:4px;">&check; 预算编制辅助</div>
+          <div style="margin-bottom:4px;">&check; 投标报价校核</div>
+          <div style="margin-bottom:4px;">&check; 结算审核</div>
+          <div style="margin-bottom:4px;">&check; 材料调差</div>
+          <div style="margin-bottom:4px;">&check; 合同风险台账</div>
+          <div>&check; 需上传当地定额、信息价、合同等地区资料</div>
+        </div>
+        <div class="caption mt-16">输出仍须专业人员复核后签章</div>
+      </div>
+    </div></div>
+  </div>
+</div>
+```
+
+- [ ] **Step 2: Second Pass Review page**
+
+Replace empty `#page-mechanism-second-pass`:
+
+```html
+<div id="page-mechanism-second-pass" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">信任机制</div>
+      <div class="section-title mb-12">不是 AI 说了算 &mdash; 每条结论都经过二次审核</div>
+      <div class="body-text-s">复杂任务完成后，系统自动执行 10 项质检，检查证据链、计算闭合、地区依据、结论强度。</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
+      <div class="section-title mb-24 text-center">10 项质检清单</div>
+      <div class="grid-2 mb-24" style="gap:6px;">
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&copy; 任务一致性 &mdash; 回答的是用户的问题吗？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&copy; 资料完整性 &mdash; 缺资料时有没有强行给结论？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&copy; 证据链 &mdash; 每条意见都有来源引用吗？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&copy; 计算闭合 &mdash; 合计等于分项相加吗？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&copy; 地区依据 &mdash; 费率用了地区资料还是通用数据？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&copy; 专业口径 &mdash; 是否混用了2024和2013标准？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&copy; 结论强度 &mdash; 疑似问题写成确定结论了吗？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&copy; 重复/遗漏 &mdash; 同一问题计了两次？漏了高优先级项？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&copy; 人工确认点 &mdash; 需要人工确认的都标了吗？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&copy; 总体判定 &mdash; 通过 / 需修正 / 禁止交付</div>
+      </div>
+      <div class="section-title mb-16 text-center">三级结论</div>
+      <div class="grid-3">
+        <div class="verdict verdict-pass"><div>通过</div></div>
+        <div class="verdict verdict-fix"><div>需修正</div></div>
+        <div class="verdict verdict-stop"><div>禁止交付</div></div>
+      </div>
+      <div class="body-text-s text-center mt-16" style="line-height:1.8;">
+        <div style="color:var(--green);">通过 &mdash; 初稿具备交付为工作底稿的基本条件</div>
+        <div style="color:var(--amber);">需修正 &mdash; 存在证据、计算或口径问题，需先修改</div>
+        <div style="color:var(--red);">禁止交付 &mdash; 存在无依据金额、关键计算错误或缺少地区资料却给确定结论</div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+- [ ] **Step 3: Security & Boundaries page**
+
+Replace empty `#page-mechanism-security`:
+
+```html
+<div id="page-mechanism-security" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">信任机制</div>
+      <div class="section-title mb-12">安全与边界</div>
+      <div class="body-text-s">使用本产品前，请了解以下边界。这些边界是专业可信度的基础，不是法律免责声明。</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title mb-12">不做什么</div>
+          <div class="body-text-s" style="line-height:2;">
+            <div>&cross; 不出具法律意见</div>
+            <div>&cross; 不替代注册造价工程师签章</div>
+            <div>&cross; 不替代审计机关结论</div>
+            <div>&cross; 不替代评标委员会判断</div>
+            <div>&cross; 不编造定额编号、材料价、工程量</div>
+            <div>&cross; 缺关键资料时不给出确定金额</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title mb-12">数据安全</div>
+          <div class="body-text-s" style="line-height:2;">
+            <div>&check; 上传文件仅用于当次任务分析</div>
+            <div>&check; 任务完成后可选择删除</div>
+            <div>&check; 企业版支持私有化部署</div>
+            <div>&check; 文件隔离 &mdash; 不同用户文件互不可见</div>
+            <div>&check; 审计日志 &mdash; 企业版可追溯每一次操作</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html && git commit -m "feat: add mechanism pages (dual mode, second pass review, security)"
+```
+
+---
+
+### Task 10: Pricing + Docs Pages
+
+**Files:**
+- Modify: `index.html` (populate `#page-pricing` and `#page-docs`)
+
+- [ ] **Step 1: Pricing page**
+
+Replace empty `#page-pricing`:
+
+```html
+<div id="page-pricing" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container text-center">
+      <div class="label-xs mb-12">定价</div>
+      <div class="section-title mb-12">选择适合你的方案</div>
+      <div class="body-text-s">所有方案均包含完整的二次审核机制和示例中心。</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
+      <div class="grid-3">
+        <div class="card text-center">
+          <div class="chip chip-green mb-12">免费体验</div>
+          <div class="section-title mb-12" style="font-size:24px;">免费</div>
+          <div class="body-text-s mb-16" style="line-height:2;">
+            <div>快速参考模式</div>
+            <div>每月 3 个任务</div>
+            <div>查看所有示例</div>
+            <div>输出需补资料清单</div>
+            <div style="color:#999;">不含项目工作模式</div>
+            <div style="color:#999;">不含地区费率/定额</div>
+          </div>
+          <span class="btn btn-primary" style="width:100%;text-align:center;">开始试用</span>
+        </div>
+        <div class="card card-accent text-center">
+          <div class="chip chip-brand mb-12">推荐</div>
+          <div class="section-title mb-12" style="font-size:24px;">专业版</div>
+          <div class="body-text-s mb-16" style="line-height:2;">
+            <div>完整项目工作模式</div>
+            <div>无限任务</div>
+            <div>7 大工作流全部可用</div>
+            <div>二次审核质检报告</div>
+            <div>导出 Markdown / Excel</div>
+            <div>优先支持</div>
+          </div>
+          <div class="caption mb-12">按月订阅或按项目计费</div>
+          <span class="btn btn-primary" style="width:100%;text-align:center;">查看定价详情</span>
+        </div>
+        <div class="card text-center">
+          <div class="chip chip-gray mb-12">团队</div>
+          <div class="section-title mb-12" style="font-size:24px;">企业版</div>
+          <div class="body-text-s mb-16" style="line-height:2;">
+            <div>团队协作审核流程</div>
+            <div>企业定额库注入</div>
+            <div>历史项目数据分析</div>
+            <div>私有化部署选项</div>
+            <div>审计日志 & 权限管理</div>
+            <div>定制合同模板</div>
+          </div>
+          <div class="caption mb-12">按年合同，定价面议</div>
+          <span class="btn btn-outline" style="width:100%;text-align:center;color:var(--text-primary);border-color:var(--border);">联系销售</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+- [ ] **Step 2: Docs page**
+
+Replace empty `#page-docs`:
+
+```html
+<div id="page-docs" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">文档与帮助</div>
+      <div class="section-title mb-12">快速开始</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
+      <div class="grid-2">
+        <div class="card"><div class="card-title mb-12">支持的文件格式</div>
+          <div class="body-text-s" style="line-height:2;">
+            <div>&check; PDF 合同、招标文件、结算书</div>
+            <div>&check; Excel (.xlsx/.xls) 清单、报价表、结算表</div>
+            <div>&check; Word (.docx/.doc) 合同条款</div>
+            <div>&check; 广联达/鲁班/斯维尔导出的计价文件</div>
+            <div>&check; 图片格式签证单、会议纪要</div>
+          </div>
+        </div>
+        <div class="card"><div class="card-title mb-12">建议上传的地区资料</div>
+          <div class="body-text-s" style="line-height:2;">
+            <div>&check; 项目所在地工程造价信息</div>
+            <div>&check; 当地计价定额和费用文件</div>
+            <div>&check; 招标文件和合同文件</div>
+            <div>&check; 企业历史项目成本数据</div>
+            <div>&check; 材料信息价、人工费指导价</div>
+          </div>
+        </div>
+        <div class="card"><div class="card-title mb-12">适用依据</div>
+          <div class="body-text-s" style="line-height:2;">
+            <div>&bull; GB/T 50500-2024 建设工程工程量清单计价标准</div>
+            <div>&bull; 项目所在地现行建设工程计价依据</div>
+            <div>&bull; 项目合同、招标文件、答疑澄清</div>
+            <div>&bull; GF-2017-0201 仅作参考</div>
+          </div>
+        </div>
+        <div class="card"><div class="card-title mb-12">常见问题</div>
+          <div class="body-text-s" style="line-height:2;">
+            <div><strong>Q: 输出可以替代造价工程师签章吗？</strong><br>A: 不可以。输出为工作底稿，须专业人员复核。</div>
+            <div><strong>Q: 没有地区资料能用吗？</strong><br>A: 可以用快速参考模式，得到参考区间和需补资料清单。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add index.html && git commit -m "feat: add pricing and docs pages"
+```
+
+---
+
+### Task 11: Final Verification & Polish
+
+**Files:**
+- Modify: `index.html` (fixes and responsiveness)
+
+- [ ] **Step 1: Verify all routes work**
+
+Open `index.html` in browser. Systematically navigate to every route and confirm:
+- `#home` — full homepage visible
+- `#features` — 7 workflow cards visible
+- `#workflow/settlement` through `#workflow/quantity-indicator` — 7 workflow pages with headers, wizards, tables
+- `#examples` — timeline + tab switcher functional
+- `#mechanism/dual-mode` — comparison cards
+- `#mechanism/second-pass` — 10 checks + 3 verdicts
+- `#mechanism/security` — boundaries list
+- `#pricing` — 3 pricing cards
+- `#docs` — FAQ and file format info
+
+- [ ] **Step 2: Check responsive layout**
+
+Resize browser to 768px and below. Confirm:
+- Nav links remain accessible (horizontal scroll if needed)
+- Grid layouts collapse to single column
+- Tables remain readable
+- Font sizes scale down appropriately
+
+- [ ] **Step 3: Verify terminology alignment**
+
+Search the file for forbidden terms:
+```bash
+grep -n "招标控制价\|安全文明施工费\|税金\|清单错误" index.html
+```
+Expected: no results (or only in explanation context).
+
+- [ ] **Step 4: Verify zero external dependencies**
+
+Search for CDN references:
+```bash
+grep -n "cdn\|unpkg\|jsdelivr\|bootstrap\|tailwind\|jquery" index.html
+```
+Expected: no results (only Google Fonts link is allowed).
+
+- [ ] **Step 5: Verify data formatting**
+
+Check that all monetary values use `class="td-num"` or `class="num"` (JetBrains Mono), have thousand separators, and 2 decimal places.
+
+- [ ] **Step 6: Fix any issues found and commit**
+
+```bash
+git add index.html && git commit -m "fix: final polish, responsive tweaks, and terminology audit"
+```
+
+---
+
+### Task 12: SEO & Meta Optimization
+
+**Files:**
+- Modify: `index.html` (update `<head>`)
+
+- [ ] **Step 1: Verify meta tags**
+
+Confirm `<head>` contains:
+- `<title>` with Chinese keywords
+- `<meta name="description">` with key value proposition
+- `<meta charset="UTF-8">`
+- `<meta name="viewport">`
+- Open Graph tags for social sharing
+
+Add if missing:
+```html
+<meta property="og:title" content="造价大师 Costing Master — 可复核的造价审核底稿">
+<meta property="og:description" content="上传合同、清单、结算书和签证资料，生成可复核的造价审核台账、风险清单和需补资料清单。基于 GB/T 50500-2024。">
+<meta property="og:type" content="website">
+```
+
+- [ ] **Step 2: Commit**
+
+```bash
+git add index.html && git commit -m "feat: add Open Graph meta tags for SEO"
+```
+
+---
+
+## Final Verification Checklist
+
+- [ ] All 15 Hash routes navigate correctly
+- [ ] Browser back/forward works for all routes
+- [ ] Homepage: Hero, role cards, trust bar, 3-step process, CTA all visible
+- [ ] Features page: 7 workflow cards
+- [ ] Each workflow page: header + wizard + upload zone + example table
+- [ ] Example center: timeline + 4 working tabs
+- [ ] Dual mode page: 2 comparison cards
+- [ ] Second pass page: 10 checks + 3 verdicts
+- [ ] Security page: boundaries + data safety
+- [ ] Pricing page: 3 tier cards
+- [ ] Docs page: FAQ + file support info
+- [ ] All monetary values in JetBrains Mono with thousand separators
+- [ ] Judgment tags consistent across all pages
+- [ ] Disclaimer present on all output sections
+- [ ] GB/T 50500-2024 terminology used throughout
+- [ ] No CSS/JS framework dependencies
+- [ ] Responsive at 768px and below
