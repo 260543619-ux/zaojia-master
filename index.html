@@ -593,12 +593,209 @@
     </div>
 
   </div>
-  <div id="page-workflow-boq-check" class="page"></div>
-  <div id="page-workflow-contract-risk" class="page"></div>
-  <div id="page-workflow-change-visa" class="page"></div>
-  <div id="page-workflow-material-price" class="page"></div>
-  <div id="page-workflow-progress-payment" class="page"></div>
-  <div id="page-workflow-quantity-indicator" class="page"></div>
+  <div id="page-workflow-boq-check" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">工作流</div>
+      <div class="section-title mb-12">清单特征与漏项检查</div>
+      <div class="body-text-s mb-16">检查工程量清单五要素（编码、名称、特征、单位、工程量），对照招标范围和图纸说明识别项目特征描述缺失和疑似漏项。</div>
+      <div class="workflow-tags">
+        <span class="chip chip-default">输入：工程量清单 Excel + 设计说明</span>
+        <span class="chip chip-default">输出：特征检查表 + 漏项登记表</span>
+        <span class="chip chip-brand">依据：GB/T 50500-2024</span>
+      </div>
+    </div>
+  </div>
+  <div class="section-sm section-divider">
+    <div class="container">
+      <div class="wizard">
+        <div class="step step-active"><div class="step-circle">1</div><div class="step-line"></div><div class="step-label">上传清单与图纸</div></div>
+        <div class="step step-pending"><div class="step-circle">2</div><div class="step-line"></div><div class="step-label">五要素检查</div></div>
+        <div class="step step-pending"><div class="step-circle">3</div><div class="step-label">输出检查表</div></div>
+      </div>
+      <div class="upload-zone"><div class="upload-title">拖拽工程量清单 Excel 和设计说明 PDF</div><div class="upload-hint">同时上传图纸说明可大幅提高漏项识别准确率</div></div>
+    </div>
+  </div>
+  <div class="section-sm section-light">
+    <div class="container">
+      <div class="label-xs mb-12">示例输出</div>
+      <div class="table-wrap mb-24">
+        <div class="table-title">清单特征检查表</div>
+        <table>
+          <thead><tr><th>序号</th><th>清单编码</th><th>项目名称</th><th>缺失特征</th><th>影响</th><th>依据</th><th>判断</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>010501001001</td><td>垫层</td><td>缺少厚度、商品混凝土/现场搅拌、泵送方式</td><td>影响综合单价</td><td style="font-size:10px;color:#888;">设计说明 第3页</td><td><span class="tag tag-suspected">疑似</span></td></tr>
+            <tr><td>2</td><td>010902001001</td><td>屋面卷材防水</td><td>缺少防水层厚度和设防道数</td><td>影响报价和结算</td><td style="font-size:10px;color:#888;">设计说明 第5页</td><td><span class="tag tag-suspected">疑似</span></td></tr>
+            <tr><td>3</td><td>010515001001</td><td>现浇构件钢筋</td><td>缺少钢筋种类、规格范围、抗震等级</td><td>影响组价</td><td style="font-size:10px;color:#888;">清单 第8行</td><td><span class="tag tag-determined">确定</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+  <div id="page-workflow-contract-risk" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">工作流</div>
+      <div class="section-title mb-12">合同造价风险识别</div>
+      <div class="body-text-s mb-16">抽取合同类型、承包范围、计价方式、付款、调价、变更、结算和争议条款，按高/中/低标记造价风险并给出谈判建议。</div>
+      <div class="workflow-tags">
+        <span class="chip chip-default">输入：合同 PDF/Word + 招标文件</span>
+        <span class="chip chip-default">输出：风险台账 + 管理层摘要</span>
+        <span class="chip chip-brand">依据：GB/T 50500-2024</span>
+      </div>
+    </div>
+  </div>
+  <div class="section-sm section-divider">
+    <div class="container">
+      <div class="wizard">
+        <div class="step step-active"><div class="step-circle">1</div><div class="step-line"></div><div class="step-label">上传合同文件</div></div>
+        <div class="step step-pending"><div class="step-circle">2</div><div class="step-line"></div><div class="step-label">抽取条款</div></div>
+        <div class="step step-pending"><div class="step-circle">3</div><div class="step-label">输出风险台账</div></div>
+      </div>
+      <div class="upload-zone"><div class="upload-title">拖拽合同文件 (PDF/Word) 和招标文件</div><div class="upload-hint">需提供专用条款，通用条款仅作参考</div></div>
+    </div>
+  </div>
+  <div class="section-sm section-light">
+    <div class="container">
+      <div class="label-xs mb-12">示例输出</div>
+      <div class="table-wrap mb-24">
+        <div class="table-title">合同造价风险台账</div>
+        <table>
+          <thead><tr><th>序号</th><th>风险等级</th><th>条款位置</th><th>原文摘要</th><th>造价/商务影响</th><th>建议谈判点</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><span style="color:#dc2626;font-weight:600;">高</span></td><td>专用条款 第37条</td><td>"材料价格风险由承包人全部承担"</td><td>违反GB/T 50500-2024禁止无限风险条款，材料价差全部由承包人承担</td><td>修改为约定风险幅度（如主要材料±5%以内由承包人承担，超出部分发包人承担）</td></tr>
+            <tr><td>2</td><td><span style="color:#d97706;font-weight:600;">中</span></td><td>专用条款 第21条</td><td>变更费用应在14天内申报，逾期视为放弃</td><td>14天时效对承包人较紧，可能导致变更费用损失</td><td>建议延长至28天，与GF-2017-0201示范文本一致</td></tr>
+            <tr><td>3</td><td><span style="color:#2563eb;font-weight:600;">低</span></td><td>协议书 第5条</td><td>质量保证金为结算价3%</td><td>符合GB/T 50500-2024上限要求，风险可控</td><td>无需修改</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+  <div id="page-workflow-change-visa" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">工作流</div>
+      <div class="section-title mb-12">变更签证审核</div>
+      <div class="body-text-s mb-16">检查签证四要素（及时性、准确性、完整性、授权性），核对是否合同范围内已包含、是否重复计取，按合同定价原则检查单价适用顺序。</div>
+      <div class="workflow-tags">
+        <span class="chip chip-default">输入：签证台账 + 合同条款</span>
+        <span class="chip chip-default">输出：审核表 + 需补资料清单</span>
+        <span class="chip chip-brand">依据：合同 + GB/T 50500-2024</span>
+      </div>
+    </div>
+  </div>
+  <div class="section-sm section-divider"><div class="container"><div class="wizard">
+    <div class="step step-active"><div class="step-circle">1</div><div class="step-line"></div><div class="step-label">上传签证资料</div></div>
+    <div class="step step-pending"><div class="step-circle">2</div><div class="step-line"></div><div class="step-label">四要素检查</div></div>
+    <div class="step step-pending"><div class="step-circle">3</div><div class="step-label">输出审核表</div></div>
+  </div><div class="upload-zone"><div class="upload-title">拖拽签证台账 Excel 及对应附件</div><div class="upload-hint">含合同变更签证条款时审核更完整</div></div></div></div>
+  <div class="section-sm section-light"><div class="container"><div class="label-xs mb-12">示例输出</div>
+  <div class="table-wrap">
+    <div class="table-title">变更签证审核表</div>
+    <table>
+      <thead><tr><th>签证编号</th><th>事项</th><th>申报金额(元)</th><th>发现的问题</th><th>判断</th></tr></thead>
+      <tbody>
+        <tr><td>V-018</td><td>主体结构脚手架搭拆增加费</td><td class="td-num">50,000.00</td><td>可能与综合脚手架清单重复计取，需核对措施项目包干范围</td><td><span class="tag tag-suspected">疑似</span></td></tr>
+        <tr><td>V-022</td><td>地下室防水增加</td><td class="td-num">128,000.00</td><td>缺少发包人书面指令，签字人授权不明</td><td><span class="tag tag-confirm">人工确认</span></td></tr>
+        <tr><td>V-025</td><td>C35混凝土柱变更</td><td class="td-num">-12,300.00</td><td>变更单价未按合同三优先原则（合同已有价），直接采用市场询价</td><td><span class="tag tag-determined">确定</span></td></tr>
+      </tbody>
+    </table>
+  </div></div></div>
+</div>
+  <div id="page-workflow-material-price" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">工作流</div>
+      <div class="section-title mb-12">材料价差分析</div>
+      <div class="body-text-s mb-16">确认材料是否在合同可调范围内，匹配规格型号，确认基准期和施工期价格来源，按合同方法计算风险幅度内外的调差金额。</div>
+      <div class="workflow-tags">
+        <span class="chip chip-default">输入：材料价格表 + 合同调差条款</span>
+        <span class="chip chip-default">输出：材料价差计算表</span>
+        <span class="chip chip-brand">依据：GB/T 50500-2024 附录A</span>
+      </div>
+    </div>
+  </div>
+  <div class="section-sm section-divider"><div class="container"><div class="wizard">
+    <div class="step step-active"><div class="step-circle">1</div><div class="step-line"></div><div class="step-label">上传价格资料</div></div>
+    <div class="step step-pending"><div class="step-circle">2</div><div class="step-line"></div><div class="step-label">匹配与核实</div></div>
+    <div class="step step-pending"><div class="step-circle">3</div><div class="step-label">计算与输出</div></div>
+  </div><div class="upload-zone"><div class="upload-title">拖拽信息价、询价单、采购合同及材料台账</div><div class="upload-hint">如缺少合同材料调差条款，无法确定风险幅度</div></div></div></div>
+  <div class="section-sm section-light"><div class="container"><div class="label-xs mb-12">示例输出</div>
+  <div class="table-wrap">
+    <div class="table-title">材料价差计算表</div>
+    <table>
+      <thead><tr><th>材料名称</th><th>规格</th><th>基准期价(元/t)</th><th>施工期价(元/t)</th><th>风险幅度</th><th>可调价差(元/t)</th><th>用量(t)</th><th>调差总额(元)</th><th>判断</th></tr></thead>
+      <tbody>
+        <tr><td>螺纹钢</td><td>HRB400 &#x3A6;16-25</td><td class="td-num">4,000.00</td><td class="td-num">4,600.00</td><td style="text-align:center;">&plusmn;5%</td><td class="td-num">400.00</td><td class="td-num">320.00</td><td class="td-num">128,000.00</td><td><span class="tag tag-determined">确定</span></td></tr>
+        <tr><td>商品混凝土</td><td>C35</td><td class="td-num">520.00</td><td class="td-num">560.00</td><td style="text-align:center;">&plusmn;5%</td><td class="td-num">34.00</td><td class="td-num">1,200.00</td><td class="td-num">40,800.00</td><td><span class="tag tag-determined">确定</span></td></tr>
+        <tr><td>电缆</td><td>YJV-4&times;25+1&times;16</td><td class="td-num">95.00</td><td class="td-muted">&mdash;</td><td style="text-align:center;">&plusmn;5%</td><td class="td-muted">&mdash;</td><td class="td-num">2,800.00</td><td class="td-muted">&mdash;</td><td><span class="tag tag-pending">待补</span></td></tr>
+      </tbody>
+    </table>
+  </div></div></div>
+</div>
+  <div id="page-workflow-progress-payment" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">工作流</div>
+      <div class="section-title mb-12">进度款审核</div>
+      <div class="body-text-s mb-16">核对本期已完工程量与形象进度、监理确认，按合同公式计算本期应付，校验预付款扣回、质保金扣留、甲供材扣回。</div>
+      <div class="workflow-tags">
+        <span class="chip chip-default">输入：进度款申报表 + 合同付款条款</span>
+        <span class="chip chip-default">输出：进度款审核表</span>
+      </div>
+    </div>
+  </div>
+  <div class="section-sm section-divider"><div class="container"><div class="wizard">
+    <div class="step step-active"><div class="step-circle">1</div><div class="step-line"></div><div class="step-label">上传申报资料</div></div>
+    <div class="step step-pending"><div class="step-circle">2</div><div class="step-line"></div><div class="step-label">核验产值与扣款</div></div>
+    <div class="step step-pending"><div class="step-circle">3</div><div class="step-label">输出审核表</div></div>
+  </div><div class="upload-zone"><div class="upload-title">拖拽进度款申报表、已完工程量报表和监理确认单</div><div class="upload-hint">同时提供合同付款条款和已标价清单</div></div></div></div>
+  <div class="section-sm section-light"><div class="container"><div class="label-xs mb-12">示例输出</div>
+  <div class="table-wrap">
+    <div class="table-title">进度款审核表</div>
+    <table>
+      <thead><tr><th>项目</th><th>申报金额(元)</th><th>审核金额(元)</th><th>差异(元)</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>本期已完产值</td><td class="td-num">3,200,000.00</td><td class="td-num">3,050,000.00</td><td class="td-num" style="color:#dc2626;">-150,000.00</td><td>2#楼三层梁板未完成模板拆除，不满足计量条件</td></tr>
+        <tr><td>按85%支付</td><td class="td-num">2,720,000.00</td><td class="td-num">2,592,500.00</td><td class="td-num" style="color:#dc2626;">-127,500.00</td><td></td></tr>
+        <tr><td>预付款扣回</td><td class="td-num">-200,000.00</td><td class="td-num">-200,000.00</td><td class="td-num">0.00</td><td>按合同第17.3条，等比例扣回第3期</td></tr>
+        <tr style="font-weight:600;"><td>本期应付</td><td class="td-num">2,520,000.00</td><td class="td-num">2,392,500.00</td><td class="td-num" style="color:#dc2626;">-127,500.00</td><td></td></tr>
+      </tbody>
+    </table>
+  </div></div></div>
+</div>
+  <div id="page-workflow-quantity-indicator" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">工作流</div>
+      <div class="section-title mb-12">算量指标反查</div>
+      <div class="body-text-s mb-16">用钢筋、混凝土、模板、砌体等含量指标做异常筛查，提示需复核的构件、楼层和软件设置，不直接判定算量错误。</div>
+      <div class="workflow-tags">
+        <span class="chip chip-default">输入：GTJ/GCCP 工程量导出表 + 建筑面积</span>
+        <span class="chip chip-default">输出：算量指标反查表</span>
+      </div>
+    </div>
+  </div>
+  <div class="section-sm section-divider"><div class="container"><div class="wizard">
+    <div class="step step-active"><div class="step-circle">1</div><div class="step-line"></div><div class="step-label">上传工程量表</div></div>
+    <div class="step step-pending"><div class="step-circle">2</div><div class="step-line"></div><div class="step-label">含量指标对比</div></div>
+    <div class="step step-pending"><div class="step-circle">3</div><div class="step-label">输出异常清单</div></div>
+  </div><div class="upload-zone"><div class="upload-title">拖拽 GTJ/GCCP 导出的工程量汇总表和建筑面积数据</div><div class="upload-hint">含结构类型、层数、抗震等级等说明时判断更准确</div></div></div></div>
+  <div class="section-sm section-light"><div class="container"><div class="label-xs mb-12">示例输出</div>
+  <div class="table-wrap">
+    <div class="table-title">算量指标反查表</div>
+    <table>
+      <thead><tr><th>指标</th><th>计算值</th><th>参考区间</th><th>偏差</th><th>可能原因</th><th>建议复核</th></tr></thead>
+      <tbody>
+        <tr><td>钢筋含量</td><td class="td-num">85.00 kg/m&sup2;</td><td style="text-align:center;">65-90 kg/m&sup2;</td><td style="text-align:center;color:var(--green);">正常</td><td>&mdash;</td><td>&mdash;</td></tr>
+        <tr><td>混凝土含量</td><td class="td-num">0.72 m&sup3;/m&sup2;</td><td style="text-align:center;">0.38-0.55 m&sup3;/m&sup2;</td><td style="text-align:center;color:var(--red);">偏高</td><td>可能混入地下车库量；或板厚设置异常</td><td>分楼层核对混凝土量，检查地下部分是否单独统计</td></tr>
+        <tr><td>模板含量</td><td class="td-num">1.80 m&sup2;/m&sup2;</td><td style="text-align:center;">2.5-3.0 m&sup2;/m&sup2;</td><td style="text-align:center;color:var(--red);">偏低</td><td>构件可能漏建；或模板计算规则设置问题</td><td>核对 GTJ 构件汇总表，确认模板计算规则</td></tr>
+      </tbody>
+    </table>
+  </div></div></div>
+</div>
   <div id="page-examples" class="page"></div>
   <div id="page-mechanism-dual-mode" class="page"></div>
   <div id="page-mechanism-second-pass" class="page"></div>
