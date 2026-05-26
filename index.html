@@ -501,7 +501,98 @@
     </div>
 
   </div>
-  <div id="page-workflow-settlement" class="page"></div>
+  <div id="page-workflow-settlement" class="page">
+
+    <!-- Page Header -->
+    <div class="section-sm workflow-header">
+      <div class="container">
+        <div class="label-xs mb-12">工作流</div>
+        <div class="section-title mb-12">结算审核</div>
+        <div class="body-text-s mb-16">上传施工合同、结算书、变更签证台账和材料调差表，逐项核验合同内清单、变更、新增工程、签证、材差、索赔、付款扣回，输出审减/审增台账和需补资料清单。</div>
+        <div class="workflow-tags">
+          <span class="chip chip-default">输入：合同 + 结算书 + 签证台账 + 材差表</span>
+          <span class="chip chip-default">输出：审核报告 + 审减台账 + 管理层摘要</span>
+          <span class="chip chip-brand">依据：GB/T 50500-2024</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-Step Wizard -->
+    <div class="section-sm section-divider">
+      <div class="container">
+        <div class="wizard">
+          <div class="step step-active">
+            <div class="step-circle">1</div>
+            <div class="step-line"></div>
+            <div class="step-label">上传与识别</div>
+          </div>
+          <div class="step step-pending">
+            <div class="step-circle">2</div>
+            <div class="step-line"></div>
+            <div class="step-label">补资料与分析</div>
+          </div>
+          <div class="step step-pending">
+            <div class="step-circle">3</div>
+            <div class="step-label">复核与导出</div>
+          </div>
+        </div>
+        <!-- Upload Zone -->
+        <div class="upload-zone">
+          <div class="upload-title">拖拽文件到此处，或点击上传</div>
+          <div class="upload-hint">支持 PDF、Excel (.xlsx/.xls)、Word (.docx/.doc)</div>
+          <div class="grid-4 grid-tight mb-16">
+            <div class="card" style="text-align:center;padding:10px 8px;">
+              <div style="font-weight:600;font-size:11px;color:var(--text-secondary);margin-bottom:2px;">&#x1F4C4; 施工合同</div>
+              <div class="caption">PDF / Word</div>
+            </div>
+            <div class="card" style="text-align:center;padding:10px 8px;">
+              <div style="font-weight:600;font-size:11px;color:var(--text-secondary);margin-bottom:2px;">&#x1F4CA; 竣工结算书</div>
+              <div class="caption">Excel</div>
+            </div>
+            <div class="card" style="text-align:center;padding:10px 8px;">
+              <div style="font-weight:600;font-size:11px;color:var(--text-secondary);margin-bottom:2px;">&#x1F4CB; 变更签证台账</div>
+              <div class="caption">Excel</div>
+            </div>
+            <div class="card" style="text-align:center;padding:10px 8px;">
+              <div style="font-weight:600;font-size:11px;color:var(--text-secondary);margin-bottom:2px;">&#x1F4C8; 材料调差表</div>
+              <div class="caption">Excel</div>
+            </div>
+          </div>
+          <div class="caption">缺少关键资料？系统会在下一步列出<span style="color:var(--brand);">需补资料清单</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example Output -->
+    <div class="section-sm section-light section-divider">
+      <div class="container">
+        <div class="label-xs mb-12">示例输出（步骤 3 完成后）</div>
+        <div class="flex gap-16 mb-16">
+          <span class="tag tag-determined">确定问题</span>
+          <span class="tag tag-suspected">疑似问题</span>
+          <span class="tag tag-pending">待补资料</span>
+          <span class="tag tag-confirm">人工确认</span>
+        </div>
+        <div class="table-wrap">
+          <div class="table-title">审减/审增问题台账</div>
+          <table>
+            <thead>
+              <tr><th>序号</th><th>问题摘要</th><th>影响金额(元)</th><th>依据来源</th><th>判断</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>C35混凝土柱综合单价高于合同清单价15%</td><td class="td-num">-42,500.00</td><td style="font-size:10px;color:#888;">合同清单 第12页 / 结算书 第8行</td><td><span class="tag tag-determined">确定</span></td></tr>
+              <tr><td>2</td><td>签证 V-018 脚手架搭拆费可能与综合脚手架清单重复计取</td><td class="td-muted">&mdash;</td><td style="font-size:10px;color:#888;">合同清单 第35行 / 签证 V-018</td><td><span class="tag tag-suspected">疑似</span></td></tr>
+              <tr><td>3</td><td>材料调差缺少施工期信息价依据，无法核实调差金额</td><td class="td-muted">&mdash;</td><td style="font-size:10px;color:#888;">材差表 第3行</td><td><span class="tag tag-pending">待补</span></td></tr>
+              <tr><td>4</td><td>签证 V-022 签字人授权不明，需确认合同约定的发包人代表</td><td class="td-muted">&mdash;</td><td style="font-size:10px;color:#888;">合同专用条款 未提供</td><td><span class="tag tag-confirm">人工确认</span></td></tr>
+              <tr><td>5</td><td>预付款扣回计算未按合同第17.3条约定的等比例扣回方式</td><td class="td-num">-18,200.00</td><td style="font-size:10px;color:#888;">合同 第17.3条 / 进度款表 第3期</td><td><span class="tag tag-determined">确定</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="disclaimer">本输出为工作底稿，不替代注册造价工程师签章、企业审批或最终结算定案文件。</div>
+      </div>
+    </div>
+
+  </div>
   <div id="page-workflow-boq-check" class="page"></div>
   <div id="page-workflow-contract-risk" class="page"></div>
   <div id="page-workflow-change-visa" class="page"></div>
