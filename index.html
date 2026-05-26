@@ -796,7 +796,101 @@
     </table>
   </div></div></div>
 </div>
-  <div id="page-examples" class="page"></div>
+  <div id="page-examples" class="page">
+
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">示例中心</div>
+      <div class="section-title">结算审核 — 某高层住宅项目</div>
+    </div>
+  </div>
+
+  <div class="section-sm section-white section-divider">
+    <div class="container">
+      <div class="flex gap-24 flex-wrap" style="font-size:12px;color:#666;">
+        <span>项目类型：高层住宅</span>
+        <span>所在地：广东省广州市</span>
+        <span>合同类型：单价合同</span>
+        <span>适用标准：GB/T 50500-2024</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-sm section-light">
+    <div class="container">
+      <div class="flex gap-32" style="align-items:flex-start;">
+        <div style="flex:1;min-width:200px;">
+          <div class="label-xs mb-12">处理流程</div>
+          <div class="timeline">
+            <div class="tl-item"><div class="tl-dot tl-dot-active"></div><div class="tl-title">上传 4 份文件</div><div class="tl-desc">合同 PDF + 结算书 Excel + 签证台账 + 材差表</div></div>
+            <div class="tl-item"><div class="tl-dot tl-dot-warning"></div><div class="tl-title">系统提示缺资料</div><div class="tl-desc">缺少合同专用条款中变更签证授权人约定</div></div>
+            <div class="tl-item"><div class="tl-dot tl-dot-dark"></div><div class="tl-title">用户补充合同专用条款</div><div class="tl-desc">补传后继续</div></div>
+            <div class="tl-item"><div class="tl-dot tl-dot-active"></div><div class="tl-title">抽取关键字段</div><div class="tl-desc">合同价、报审价、已付款、签证金额</div></div>
+            <div class="tl-item"><div class="tl-dot tl-dot-active"></div><div class="tl-title">生成 23 条问题台账</div><div class="tl-desc">12 确定 + 7 疑似 + 3 待补 + 1 人工确认</div></div>
+            <div class="tl-item"><div class="tl-dot tl-dot-green"></div><div class="tl-title">二次审核：通过</div><div class="tl-desc">建议人工复核 3 项争议事项</div></div>
+            <div class="tl-item"><div class="tl-dot tl-dot-dark"></div><div class="tl-title">下载成果</div><div class="tl-desc">结算审核报告 + 审减台账 + 管理层摘要</div></div>
+          </div>
+        </div>
+        <div style="flex:2;min-width:300px;">
+          <div class="tab-bar" id="example-tabs">
+            <span class="tab active" onclick="switchTab('example-tabs','tab-sjtz',this)">审减台账</span>
+            <span class="tab" onclick="switchTab('example-tabs','tab-zysx',this)">争议事项</span>
+            <span class="tab" onclick="switchTab('example-tabs','tab-bzl',this)">需补资料</span>
+            <span class="tab" onclick="switchTab('example-tabs','tab-summary',this)">管理层摘要</span>
+          </div>
+          <div class="tab-content active" id="tab-sjtz">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>#</th><th>问题摘要</th><th style="text-align:right;">影响金额(元)</th><th>判断</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>C35混凝土柱单价高于合同价15%</td><td class="td-num">-42,500.00</td><td><span class="tag tag-determined">确定</span></td></tr>
+                  <tr><td>2</td><td>签证V-018疑似与脚手架清单重复</td><td class="td-muted">&mdash;</td><td><span class="tag tag-suspected">疑似</span></td></tr>
+                  <tr><td>3</td><td>材料调差缺施工期信息价依据</td><td class="td-muted">&mdash;</td><td><span class="tag tag-pending">待补</span></td></tr>
+                  <tr><td>...</td><td colspan="3" style="color:#888;text-align:center;">查看完整 23 条</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-content" id="tab-zysx">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>#</th><th>争议事项</th><th style="text-align:right;">承包人主张(元)</th><th style="text-align:right;">审核意见(元)</th><th style="text-align:right;">争议差额(元)</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>停窝工期间人工费补偿</td><td class="td-num">180,000.00</td><td class="td-num">90,000.00</td><td class="td-num">90,000.00</td></tr>
+                  <tr><td>2</td><td>设计变更导致的模板费用增加</td><td class="td-num">65,000.00</td><td class="td-num">40,000.00</td><td class="td-num">25,000.00</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-content" id="tab-bzl">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>#</th><th>缺失资料</th><th>用途</th><th>优先级</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>合同专用条款变更签证章节</td><td>确认授权签字人和时效约定</td><td><span style="color:#dc2626;font-weight:600;">高</span></td></tr>
+                  <tr><td>2</td><td>施工期广州市建设工程造价信息</td><td>核实材料调差计算依据</td><td><span style="color:#dc2626;font-weight:600;">高</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-content" id="tab-summary">
+            <div class="card"><div class="card-title mb-12">审核结论摘要</div>
+              <div style="font-size:12px;line-height:1.8;">
+                <div>报审金额：<span class="num">28,650,000.00</span> 元</div>
+                <div>确定审减：<span class="num" style="color:#dc2626;">-847,200.00</span> 元</div>
+                <div>确定审增：<span class="num" style="color:#16a34a;">+123,500.00</span> 元</div>
+                <div>疑似争议：<span class="num" style="color:#d97706;">315,000.00</span> 元（需人工确认）</div>
+                <div style="font-weight:700;margin-top:4px;">建议审定金额：<span class="num">27,926,300.00</span> 元（待争议解决后调整）</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="disclaimer">本输出为工作底稿，不替代注册造价工程师签章、企业审批或最终结算定案文件。</div>
+    </div>
+  </div>
+
+</div>
   <div id="page-mechanism-dual-mode" class="page">
   <div class="section-sm workflow-header">
     <div class="container">
@@ -1035,6 +1129,17 @@
   window.addEventListener('hashchange', navigate);
   window.addEventListener('load', navigate);
 })();
+
+function switchTab(barId, tabId, el) {
+  var bar = document.getElementById(barId);
+  if (!bar) return;
+  bar.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  var parent = bar.parentElement;
+  parent.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+  var content = document.getElementById(tabId);
+  if (content) content.classList.add('active');
+}
 </script>
 </body>
 </html>
