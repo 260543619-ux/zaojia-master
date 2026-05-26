@@ -327,8 +327,180 @@
   </div>
 </nav>
 <main>
-  <div id="page-home" class="page active"></div>
-  <div id="page-features" class="page"></div>
+  <div id="page-home" class="page active">
+
+    <!-- Hero + Roles -->
+    <div class="section section-dark section-divider-dark">
+      <div class="container-wide">
+        <div class="flex gap-48 hero-flex" style="align-items: center;">
+          <div style="flex: 1;">
+            <div class="page-title-dark" style="margin-bottom: 10px;">
+              把合同、清单、结算书整理成<span class="highlight">可复核</span>的造价审核底稿。
+            </div>
+            <div class="body-text-s text-dark-muted" style="margin-bottom: 24px;">
+              上传项目文件，AI 引导补齐缺失资料，逐项抽取关键字段，生成引用文件来源的台账和报告。每条意见标明判断等级：<span style="color:#dc2626;">确定问题</span> / <span style="color:#d97706;">疑似问题</span> / <span style="color:#2563eb;">待补资料</span> / <span style="color:#6b7280;">人工确认</span>
+            </div>
+            <div class="flex gap-12">
+              <a href="#examples" class="btn btn-primary">查看结算审核示例 &rarr;</a>
+              <span class="btn btn-outline">上传文件试用</span>
+            </div>
+          </div>
+          <div style="flex: 1;">
+            <div class="label-xs" style="margin-bottom: 8px;">我是</div>
+            <div class="grid-2 grid-tight">
+              <a href="#workflow/boq-check" class="role-card">
+                <span class="role-icon">&#x1F4D0;</span>
+                <div><div class="role-name">造价员/预算员</div><div class="role-desc">清单检查 &middot; 组价 &middot; 指标反查</div></div>
+              </a>
+              <a href="#workflow/settlement" class="role-card">
+                <span class="role-icon">&#x1F4CB;</span>
+                <div><div class="role-name">结算员/审核人员</div><div class="role-desc">结算审核 &middot; 审减台账</div></div>
+              </a>
+              <a href="#workflow/contract-risk" class="role-card">
+                <span class="role-icon">&#x1F4CA;</span>
+                <div><div class="role-name">商务经理/成本负责人</div><div class="role-desc">合同风险 &middot; 材料调差</div></div>
+              </a>
+              <a href="#workflow/boq-check" class="role-card">
+                <span class="role-icon">&#x2696;&#xFE0F;</span>
+                <div><div class="role-name">招投标人员</div><div class="role-desc">限价校核 &middot; 不平衡报价</div></div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust Bar -->
+    <div class="section section-white section-divider">
+      <div class="container">
+        <div class="grid-3">
+          <div class="trust-item">
+            <div class="trust-label">不编造</div>
+            <div class="trust-desc">缺少地区定额、信息价或合同条款时，不给出确定金额。</div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-label">可溯源</div>
+            <div class="trust-desc">每条意见都引用文件名、页码、条款号或清单行号。</div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-label">会自检</div>
+            <div class="trust-desc">复杂任务完成后自动执行10项质检，标记能否交付。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-Step Process -->
+    <div class="section section-light section-divider">
+      <div class="container text-center">
+        <div class="section-title mb-32">三个步骤，从资料到工作底稿</div>
+        <div class="grid-3">
+          <div>
+            <div style="width:44px;height:44px;background:var(--bg-dark);color:var(--brand);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;margin:0 auto 12px;">1</div>
+            <div class="card-title mb-12">上传与识别</div>
+            <div class="body-text-s">拖入合同、清单、结算书<br>系统自动识别文件类型<br>列出缺失资料清单</div>
+          </div>
+          <div>
+            <div style="width:44px;height:44px;background:var(--bg-dark);color:var(--brand);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;margin:0 auto 12px;">2</div>
+            <div class="card-title mb-12">补充与抽取</div>
+            <div class="body-text-s">补齐关键资料后<br>逐项抽取条款、金额、风险点<br>按确定/疑似/待补分级</div>
+          </div>
+          <div>
+            <div style="width:44px;height:44px;background:var(--bg-dark);color:var(--brand);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;margin:0 auto 12px;">3</div>
+            <div class="card-title mb-12">复核与导出</div>
+            <div class="body-text-s">自动二次审核<br>下载 Markdown/Excel 工作底稿<br>标注所有人工确认点</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer CTA -->
+    <div class="section section-dark text-center">
+      <div class="container">
+        <div class="section-title-dark mb-12">准备好了吗？</div>
+        <div class="body-text-s text-dark-muted mb-24">选择一个身份开始，或直接查看示例看看它能出什么成果。</div>
+        <div class="flex gap-12" style="justify-content: center;">
+          <a href="#examples" class="btn btn-primary">查看结算审核示例 &rarr;</a>
+          <a href="#workflow/contract-risk" class="btn btn-outline">查看合同风险示例 &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="page-features" class="page">
+
+    <div class="section-sm workflow-header">
+      <div class="container">
+        <div class="label-xs mb-12">功能总览</div>
+        <div class="section-title mb-12">七大工作流</div>
+        <div class="body-text-s mb-16">每个工作流覆盖一个完整的造价审核场景，从文件上传到成果导出。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="container">
+        <div class="grid-2">
+          <a href="#workflow/settlement" class="card">
+            <div class="card-title mb-12">&#x1F4CB; 结算审核</div>
+            <div class="body-text-s">上传施工合同、结算书、签证台账和材料调差表，逐项核验，输出审减/审增台账和需补资料清单。</div>
+            <div class="mt-16 flex gap-8 flex-wrap">
+              <span class="chip chip-default">合同 + 结算书</span>
+              <span class="chip chip-default">审减台账</span>
+            </div>
+          </a>
+          <a href="#workflow/boq-check" class="card">
+            <div class="card-title mb-12">&#x1F50D; 清单特征与漏项检查</div>
+            <div class="body-text-s">检查清单五要素，对照图纸和设计说明识别项目特征缺失和疑似漏项。</div>
+            <div class="mt-16 flex gap-8 flex-wrap">
+              <span class="chip chip-default">Excel 清单</span>
+              <span class="chip chip-default">特征检查表</span>
+            </div>
+          </a>
+          <a href="#workflow/contract-risk" class="card">
+            <div class="card-title mb-12">&#x2696;&#xFE0F; 合同造价风险识别</div>
+            <div class="body-text-s">抽取合同条款，按高/中/低标记造价风险，给出谈判建议方向。</div>
+            <div class="mt-16 flex gap-8 flex-wrap">
+              <span class="chip chip-default">PDF / Word</span>
+              <span class="chip chip-default">风险台账</span>
+            </div>
+          </a>
+          <a href="#workflow/change-visa" class="card">
+            <div class="card-title mb-12">&#x1F4DD; 变更签证审核</div>
+            <div class="body-text-s">检查签证四要素：及时性、准确性、完整性、授权性，标记重复计取风险。</div>
+            <div class="mt-16 flex gap-8 flex-wrap">
+              <span class="chip chip-default">签证台账</span>
+              <span class="chip chip-default">证据链评分</span>
+            </div>
+          </a>
+          <a href="#workflow/material-price" class="card">
+            <div class="card-title mb-12">&#x1F4C8; 材料价差分析</div>
+            <div class="body-text-s">按合同约定方法计算材料调差金额，确认基准期、施工期和风险幅度。</div>
+            <div class="mt-16 flex gap-8 flex-wrap">
+              <span class="chip chip-default">信息价 + 询价单</span>
+              <span class="chip chip-default">材差计算表</span>
+            </div>
+          </a>
+          <a href="#workflow/progress-payment" class="card">
+            <div class="card-title mb-12">&#x1F4B0; 进度款审核</div>
+            <div class="body-text-s">核对已完工程量与形象进度，计算本期应付并校验预付款、质保金、甲供材扣回。</div>
+            <div class="mt-16 flex gap-8 flex-wrap">
+              <span class="chip chip-default">付款条款</span>
+              <span class="chip chip-default">审核表</span>
+            </div>
+          </a>
+          <a href="#workflow/quantity-indicator" class="card">
+            <div class="card-title mb-12">&#x1F4CF; 算量指标反查</div>
+            <div class="body-text-s">用钢筋、混凝土、模板含量指标做异常筛查，提示需复核的构件和楼层。</div>
+            <div class="mt-16 flex gap-8 flex-wrap">
+              <span class="chip chip-default">GTJ 导出</span>
+              <span class="chip chip-default">含量指标</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
   <div id="page-workflow-settlement" class="page"></div>
   <div id="page-workflow-boq-check" class="page"></div>
   <div id="page-workflow-contract-risk" class="page"></div>
