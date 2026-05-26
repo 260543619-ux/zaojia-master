@@ -797,9 +797,122 @@
   </div></div></div>
 </div>
   <div id="page-examples" class="page"></div>
-  <div id="page-mechanism-dual-mode" class="page"></div>
-  <div id="page-mechanism-second-pass" class="page"></div>
-  <div id="page-mechanism-security" class="page"></div>
+  <div id="page-mechanism-dual-mode" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">信任机制</div>
+      <div class="section-title mb-12">两种工作模式</div>
+      <div class="body-text-s">为保证输出可靠性，系统根据是否上传地区资料自动切换工作模式。</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container"><div class="grid-2">
+      <div class="card">
+        <div class="flex-between mb-12">
+          <div class="card-title">快速参考模式</div>
+          <span class="chip chip-green">免费</span>
+        </div>
+        <div class="body-text-s" style="line-height:1.8;">
+          <div style="margin-bottom:4px;">&#x2713; 投资估算区间参考</div>
+          <div style="margin-bottom:4px;">&#x2713; 报价异常提示</div>
+          <div style="margin-bottom:4px;">&#x2713; 需补资料清单</div>
+          <div style="margin-bottom:4px;color:#999;">&#x2717; 确定金额结论</div>
+          <div style="margin-bottom:4px;color:#999;">&#x2717; 地区费率/定额</div>
+          <div style="color:#999;">&#x2717; 结算审核结论</div>
+        </div>
+        <div class="caption mt-16">无需上传地区资料，使用内置全国参考区间</div>
+      </div>
+      <div class="card card-accent">
+        <div class="flex-between mb-12">
+          <div class="card-title">项目工作模式</div>
+          <span class="chip chip-brand">专业版</span>
+        </div>
+        <div class="body-text-s" style="line-height:1.8;">
+          <div style="margin-bottom:4px;">&#x2713; 预算编制辅助</div>
+          <div style="margin-bottom:4px;">&#x2713; 投标报价校核</div>
+          <div style="margin-bottom:4px;">&#x2713; 结算审核</div>
+          <div style="margin-bottom:4px;">&#x2713; 材料调差</div>
+          <div style="margin-bottom:4px;">&#x2713; 合同风险台账</div>
+          <div>&#x2713; 需上传当地定额、信息价、合同等地区资料</div>
+        </div>
+        <div class="caption mt-16">输出仍须专业人员复核后签章</div>
+      </div>
+    </div></div>
+  </div>
+</div>
+  <div id="page-mechanism-second-pass" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">信任机制</div>
+      <div class="section-title mb-12">不是 AI 说了算 &mdash; 每条结论都经过二次审核</div>
+      <div class="body-text-s">复杂任务完成后，系统自动执行 10 项质检，检查证据链、计算闭合、地区依据、结论强度。</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
+      <div class="section-title mb-24 text-center">10 项质检清单</div>
+      <div class="grid-2 mb-24" style="gap:6px;">
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&#9312; 任务一致性 &mdash; 回答的是用户的问题吗？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&#9313; 资料完整性 &mdash; 缺资料时有没有强行给结论？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&#9314; 证据链 &mdash; 每条意见都有来源引用吗？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&#9315; 计算闭合 &mdash; 合计等于分项相加吗？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&#9316; 地区依据 &mdash; 费率用了地区资料还是通用数据？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&#9317; 专业口径 &mdash; 是否混用了2024和2013标准？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&#9318; 结论强度 &mdash; 疑似问题写成确定结论了吗？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&#9319; 重复/遗漏 &mdash; 同一问题计了两次？漏了高优先级项？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&#9320; 人工确认点 &mdash; 需要人工确认的都标了吗？</div>
+        <div style="padding:8px 12px;background:var(--bg-light);border-radius:3px;font-size:12px;">&#9321; 总体判定 &mdash; 通过 / 需修正 / 禁止交付</div>
+      </div>
+      <div class="section-title mb-16 text-center">三级结论</div>
+      <div class="grid-3">
+        <div class="verdict verdict-pass"><div>通过</div></div>
+        <div class="verdict verdict-fix"><div>需修正</div></div>
+        <div class="verdict verdict-stop"><div>禁止交付</div></div>
+      </div>
+      <div class="body-text-s text-center mt-16" style="line-height:1.8;">
+        <div style="color:var(--green);">通过 &mdash; 初稿具备交付为工作底稿的基本条件</div>
+        <div style="color:var(--amber);">需修正 &mdash; 存在证据、计算或口径问题，需先修改</div>
+        <div style="color:var(--red);">禁止交付 &mdash; 存在无依据金额、关键计算错误或缺少地区资料却给确定结论</div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div id="page-mechanism-security" class="page">
+  <div class="section-sm workflow-header">
+    <div class="container">
+      <div class="label-xs mb-12">信任机制</div>
+      <div class="section-title mb-12">安全与边界</div>
+      <div class="body-text-s">使用本产品前，请了解以下边界。这些边界是专业可信度的基础，不是法律免责声明。</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title mb-12">不做什么</div>
+          <div class="body-text-s" style="line-height:2;">
+            <div>&#x2717; 不出具法律意见</div>
+            <div>&#x2717; 不替代注册造价工程师签章</div>
+            <div>&#x2717; 不替代审计机关结论</div>
+            <div>&#x2717; 不替代评标委员会判断</div>
+            <div>&#x2717; 不编造定额编号、材料价、工程量</div>
+            <div>&#x2717; 缺关键资料时不给出确定金额</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title mb-12">数据安全</div>
+          <div class="body-text-s" style="line-height:2;">
+            <div>&#x2713; 上传文件仅用于当次任务分析</div>
+            <div>&#x2713; 任务完成后可选择删除</div>
+            <div>&#x2713; 企业版支持私有化部署</div>
+            <div>&#x2713; 文件隔离 &mdash; 不同用户文件互不可见</div>
+            <div>&#x2713; 审计日志 &mdash; 企业版可追溯每一次操作</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
   <div id="page-pricing" class="page"></div>
   <div id="page-docs" class="page"></div>
 </main>
