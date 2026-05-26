@@ -1,4 +1,4 @@
-# 造价大师 Zaojia Master
+# 造价大师 Costing Master
 
 面向中国工程造价实务的 AI Skill，用于辅助工程量清单检查、预算编制、结算审核、合同商务风险识别、变更签证审核、材料价差分析和成本测算。
 
@@ -63,7 +63,7 @@
 ## 目录结构
 
 ```text
-zaojia-master/
+costing-master/
 ├── SKILL.md
 ├── README.md
 ├── CHANGELOG.md
@@ -131,14 +131,14 @@ zaojia-master/
 
 ```bash
 mkdir -p .claude/skills
-git clone https://github.com/260543619-ux/zaojia-master.git .claude/skills/zaojia-master
+git clone https://github.com/jayden-lg/costing-master.git .claude/skills/costing-master
 ```
 
 ### 用户级安装
 
 ```bash
 mkdir -p ~/.claude/skills
-git clone https://github.com/260543619-ux/zaojia-master.git ~/.claude/skills/zaojia-master
+git clone https://github.com/jayden-lg/costing-master.git ~/.claude/skills/costing-master
 ```
 
 ## 适用依据
