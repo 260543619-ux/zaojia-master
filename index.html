@@ -315,5 +315,53 @@
   </style>
 </head>
 <body>
+<nav>
+  <span class="nav-brand">造价大师 Costing Master</span>
+  <div class="nav-links">
+    <a href="#home" data-nav="home">首页</a>
+    <a href="#features" data-nav="features">功能</a>
+    <a href="#examples" data-nav="examples">示例</a>
+    <a href="#mechanism/dual-mode" data-nav="mechanism">信任机制</a>
+    <a href="#pricing" data-nav="pricing">定价</a>
+    <a href="#docs" data-nav="docs">文档</a>
+  </div>
+</nav>
+<main>
+  <div id="page-home" class="page active"></div>
+  <div id="page-features" class="page"></div>
+  <div id="page-workflow-settlement" class="page"></div>
+  <div id="page-workflow-boq-check" class="page"></div>
+  <div id="page-workflow-contract-risk" class="page"></div>
+  <div id="page-workflow-change-visa" class="page"></div>
+  <div id="page-workflow-material-price" class="page"></div>
+  <div id="page-workflow-progress-payment" class="page"></div>
+  <div id="page-workflow-quantity-indicator" class="page"></div>
+  <div id="page-examples" class="page"></div>
+  <div id="page-mechanism-dual-mode" class="page"></div>
+  <div id="page-mechanism-second-pass" class="page"></div>
+  <div id="page-mechanism-security" class="page"></div>
+  <div id="page-pricing" class="page"></div>
+  <div id="page-docs" class="page"></div>
+</main>
+<script>
+(function() {
+  function navigate() {
+    var hash = location.hash.replace('#', '') || 'home';
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    var pageId = 'page-' + hash.replace(/\//g, '-');
+    var target = document.getElementById(pageId);
+    if (target) { target.classList.add('active'); } else { document.getElementById('page-home').classList.add('active'); }
+    document.querySelectorAll('nav a').forEach(function(a) {
+      a.classList.remove('active');
+      if (a.getAttribute('data-nav') && hash.startsWith(a.getAttribute('data-nav'))) {
+        a.classList.add('active');
+      }
+    });
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', navigate);
+  window.addEventListener('load', navigate);
+})();
+</script>
 </body>
 </html>
