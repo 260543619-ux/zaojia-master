@@ -66,7 +66,7 @@ cd your-project
 mkdir -p .claude/skills
 
 # 克隆技能
-git clone https://github.com/<your-username>/zaojia-master.git .claude/skills/zaojia-master
+git clone https://github.com/260543619-ux/zaojia-master.git .claude/skills/zaojia-master
 ```
 
 ### 方式二：全局安装（所有项目可用）
@@ -74,7 +74,7 @@ git clone https://github.com/<your-username>/zaojia-master.git .claude/skills/za
 ```bash
 # 安装到用户级 skills 目录
 mkdir -p ~/.claude/skills
-git clone https://github.com/<your-username>/zaojia-master.git ~/.claude/skills/zaojia-master
+git clone https://github.com/260543619-ux/zaojia-master.git ~/.claude/skills/zaojia-master
 ```
 
 安装后，Claude Code 会在启动时自动发现该 Skill。下次对话中提到"帮我编一个工程量清单"、"审核这份结算"、"这个综合单价合理吗"等时，Skill 会自动激活。
@@ -82,7 +82,7 @@ git clone https://github.com/<your-username>/zaojia-master.git ~/.claude/skills/
 ### 方式三：通过 agentskill.sh 安装（如已发布）
 
 ```bash
-/learn @<your-username>/zaojia-master
+/learn @260543619-ux/zaojia-master
 ```
 
 ## 触发方式
@@ -114,8 +114,8 @@ git clone https://github.com/<your-username>/zaojia-master.git ~/.claude/skills/
 
 ## 作者
 
-- **维护者**: [你的名字]
-- **GitHub**: [@your-username](https://github.com/your-username)
+- **维护者**: 260543619-ux
+- **GitHub**: [@260543619-ux](https://github.com/260543619-ux)
 
 ## 许可证
 
