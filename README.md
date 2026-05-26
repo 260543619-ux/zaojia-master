@@ -38,19 +38,20 @@
 
 ```
 zaojia-master/
-├── SKILL.md                              # 核心入口文件（~200行）
+├── SKILL.md                              # 核心入口文件（~220行+自检清单+输出模板）
 ├── README.md                             # 本文件
 ├── LICENSE                               # MIT 许可证
-└── references/                           # 详细参考文件（按需加载）
+└── references/                           # 详细参考文件（按需加载，共11个）
     ├── gbt50500-2024.md                  # GB/T 50500-2024标准解读+新旧对比
     ├── 13-step-cost-management.md        # 估算→决算13步全流程
-    ├── boq-and-pricing.md                # 工程量清单+综合单价详解
+    ├── boq-and-pricing.md                # 工程量清单+综合单价详解（11省取费基数）
     ├── contract-and-risk.md              # 合同类型+风险分配+价款调整
     ├── change-order-and-claims.md        # 变更+签证+索赔
     ├── material-price-adjustment.md      # 材料价差调整方法
     ├── audit-and-settlement.md           # 结算+决算+审计
-    ├── fee-composition.md                # 费用组成四级划分
-    ├── software-and-quotas.md            # 广联达+定额体系
+    ├── fee-composition.md                # 费用组成四级划分（8省取费对比）
+    ├── software-and-quotas.md            # 广联达+鲁班+斯维尔+同望+纵横
+    ├── zaojia-indicators.md              # 造价指标+含钢量+材料参考价+EPC/装配式
     └── glossary.md                       # 200+中英造价术语
 ```
 
