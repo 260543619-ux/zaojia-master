@@ -117,7 +117,9 @@ description: |
 | 费用组成、取费口径、增值税 | `references/fee-composition.md` |
 | 目标成本、动态成本、成本偏差 | `references/cost-management.md` |
 | 造价软件和定额体系边界 | `references/software-and-quotas.md` |
+| DWG/CAD 图纸处理策略与能力边界 | `references/dwg-cad-handling.md` |
 | 造价指标、含量指标、参考价格 | `references/zaojia-indicators.md` |
+| 信息价缺失时的市场询价方法 | `references/market-pricing-fallback.md` |
 | 中英术语对照 | `references/glossary.md` |
 
 ## 输出模板导航
