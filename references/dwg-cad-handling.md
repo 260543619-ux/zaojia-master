@@ -19,16 +19,62 @@
    ├── 是 → L3 模式：逐构件分组对比，标记偏差 >5% 的项
    └── 否 → 继续判断
 
-2. 是否有 DWG/DXF 文件且可安装 CAD 读取工具？
-   ├── 有 QCAD/LibreCAD → L1 模式：安装工具，执行轻量实体提取
-   ├── DWG 可转为 DXF → L2 模式：提取几何数据做线性/面积验证
+2. 是否有 DWG/DXF 文件？
+   ├── 已安装 AutoCAD → 优先 3A.2（AutoLISP 算量）或 3A.3（DXF + ezdxf）
+   ├── 有 QCAD/LibreCAD（无 AutoCAD）→ L1 模式：安装工具，执行轻量实体提取
+   ├── DWG 可转为 DXF（无 CAD 工具）→ L2 模式：提取几何数据做线性/面积验证
    └── 仅有 PDF 图纸 → 降级为 L1：提取 PDF 文本，标注"无法量测"
 
 3. 仅有图片/扫描件图纸？
    └── 无法进行任何复核。输出"需 CAD 格式图纸或 GTJ 导出明细表"
 ```
 
-## 三、L1 轻量实体提取操作指南
+## 三-A、AutoCAD 原生方案（用户已安装 AutoCAD 时优先使用）
+
+造价人员大概率已安装 AutoCAD，以下方案无需额外购买或许可，优先于 L1 QCAD 路线。
+
+### 3A.1 检测 AutoCAD 安装
+
+| 平台 | 检测方式 |
+|---|---|
+| macOS | 检查 `/Applications/Autodesk/AutoCAD 2024/AutoCAD 2024.app`（年份按实际版本替换） |
+| Windows | 注册表 `HKLM\SOFTWARE\Autodesk\AutoCAD` 或检查 `C:\Program Files\Autodesk\` |
+
+检测到 AutoCAD 后，优先使用以下两种方案，跳过 QCAD 安装。
+
+### 3A.2 轻量算量方案（AutoLISP，免费）
+
+1. 下载 [ferhatatesmech/AutoCAD-Quantity-Takeoff](https://github.com/ferhatatesmech/AutoCAD-Quantity-Takeoff)（GitHub 开源）
+2. AutoCAD 内 `APPLOAD` → 加载 `quantity.lsp`
+3. 按图层选择对象 → 自动汇总长度/面积 → 导出 CSV
+4. 将 CSV 与清单量做差值对比
+
+适用场景：按图层分构件（如 S-COLUMN、S-BEAM）的 DWG，可快速提取各图层多段线面积和线段长度。
+
+### 3A.3 DXF 导出方案（ezdxf 解析）
+
+1. AutoCAD 打开 DWG → `SAVEAS` → 选择 DXF 2018 格式
+2. Python `ezdxf` 读取 DXF → 按图层提取多段线面积/长度
+3. 与清单量做差值对比
+
+```python
+# 示例：按图层汇总多段线面积
+import ezdxf
+doc = ezdxf.readfile("exported.dxf")
+msp = doc.modelspace()
+areas = {}
+for e in msp.query("LWPOLYLINE"):
+    if not e.closed:
+        continue
+    layer = e.dxf.layer
+    areas[layer] = areas.get(layer, 0) + e.get_area()
+```
+
+DXF 方案的优势：全命令行化、可批量、无 GUI 依赖，适合 CI/脚本集成。
+
+## 三、L1 轻量实体提取操作指南（无 AutoCAD 时的备选方案）
+
+QCAD 试用版启动时有约 15 秒延迟，频繁调用时不可行，仅适合少量文件的单次提取。批量处理优先使用 3A.2 或 3A.3。
 
 ### 安装 QCAD（macOS）
 
@@ -39,8 +85,8 @@ brew install --cask qcad
 ### 执行实体提取
 
 ```bash
-# 列出 DWG 中的图层和实体统计
-qcad -no-gui -autostop scripts/Proc/Dwg2Csv/dwg2csv.js <file.dwg> -o <output_dir>
+# 注意：dwg2csv 实际路径在 QCAD.app/Contents/Resources/ 下，非 scripts/Proc/Dwg2Csv/
+qcad -no-gui -autostop Resources/scripts/Proc/Dwg2Csv/dwg2csv.js <file.dwg> -o <output_dir>
 ```
 
 ### 提取后分析
