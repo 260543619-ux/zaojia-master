@@ -4,3 +4,11 @@
 *~
 .vscode/
 .idea/
+outputs/
+.superpowers/
+*.xlsx
+*.pdf
+*.rar
+*.zip
+*.dwg
+!**/templates/**
